@@ -1,0 +1,129 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+     
+
+/* SEARCH BAR CONTAINER */
+.search-local { 
+	display: flex;
+	align-items: center;
+	column-gap: 2rem;
+	padding-left: 2rem;
+	background: #fff;
+	border-radius: 1rem; 
+	height: auto;
+	border: 0.1rem solid blue;
+	border-right: none;
+	    width: 40%;
+    margin: auto;
+}
+
+ 
+/* INPUT */
+.search-local input {
+	height: 100%;
+	width: 100%;
+	flex: 1 1 25rem; 
+	display: flex;
+	outline: none;
+	border: none; 
+	font-size: 16px;
+    padding: 10px 11px;
+    background: transparent;
+}
+input[type="text"]::placeholder {
+	 font-size: 16px;
+}
+ .search_resultAPP {
+    max-height: 30rem;
+    overflow: auto;
+    padding: 10px; 
+	    width: 40%;
+    margin: auto;
+}
+*:focus-visible{
+	outline:0px !important;
+	box-shadow:none !important;
+}
+/* BUTTON */
+.search-local button {
+    background: blue;
+    border: none;
+    border-radius: 0 1rem 1rem 0;
+    font-weight: 500;
+    font-size: 16px;
+    height: 4rem;
+    padding: 0px 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+button a {
+	color: #fff;
+    text-decoration: auto;
+}
+.product_data p {
+    margin: 0;
+    color: #fff;
+}
+
+.product_data {
+    display: flex;
+    margin-top: 10px;
+}
+.main_result {
+    display: flex;
+    align-items: center;
+}
+
+.main_result img {
+    height: 44px;
+    object-fit: cover;
+    width: 60px;
+    margin-right: 10px;
+}
+.search_result {
+    margin-top: 1rem;
+    background: transparent;
+    padding: 10px;
+    border: 1px solid #ccccccc7;
+  
+}
+.main_result{
+    margin-bottom: 10px;
+
+}
+
+
+ 
+
+/* MEDIAS */
+@media (max-width: 767px) {
+	.search-local {
+		padding-left: 16px;
+		column-gap: 0.25rem;
+		width:100%;
+	}
+
+	.search-local button {
+		width: 10rem;
+	}
+    input[type="text"]::placeholder {
+	 font-size: 16px;
+}
+	.search_resultAPP{
+		width:100%;
+	}  
+} 
+
+</style>
+
+
+<div class="search-local">
+	
+</div>
+
+
+<!-- icons -->
+ 

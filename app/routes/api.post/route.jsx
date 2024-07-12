@@ -19,6 +19,6 @@ export async function action({ request }) {
   console.log(accessToken);
   console.log(currectShop);
 
-  return await cors(request, json({ accessToken: accessToken, secretId :'d573e782ff3675dde17f01560c3a8efc' ,resultClassName: serachClass.resultClassName ,Html:serachClass.html,filter:serachClass.filter}));
+  return await cors(request, json({ accessToken: accessToken, secretId :'02b02d849e931118bdf6c9a027136c32' ,resultClassName: serachClass.resultClassName ,Html:serachClass.html,filter:serachClass.filter}));
 }
 

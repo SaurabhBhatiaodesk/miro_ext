@@ -4,8 +4,6 @@ const filters_static = `<aside aria-labelledby="verticalTitle" class="facets-wra
 <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path></svg> </div>
  </summary>
   <div id="Facet-1-template--21911434920228__main" class="parent-display facets__display"><div class="facets__header"> <div> <span class="facets__selected no-js-hidden">0 selected</span></div>
-
-
    </div><fieldset class="facets-wrap parent-wrap "> <legend class="visually-hidden">Availability</legend> <ul class="facets-layout-list facets__list list-unstyled no-js-hidden" role="list"> <li class="list-menu__item facets__item"> <label for="Filter-filter.v.availability-1" class="facets__label facet-checkbox"> <input type="checkbox" name="filter.v.availability" onclick="javascript:filter_vaule(this.value,this);" value="1" id="Filter-filter.v.availability-1"> <svg width="1.6rem" height="1.6rem" viewBox="0 0 16 16" aria-hidden="true" focusable="false"> <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect> </svg>
     <svg aria-hidden="true" class="icon icon-checkmark" width="1.1rem" height="0.7rem" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path> </svg> <span class="facet-checkbox__text" aria-hidden="true">In stock </span> <span class="visually-hidden">In stock (2 products)</span> </label> </li> <li class="list-menu__item facets__item"> <label for="Filter-filter.v.availability-2" class="facets__label facet-checkbox"> <input type="checkbox" onclick="javascript:filter_vaule(this.value,this);" name="filter.v.availability" value="0" id="Filter-filter.v.availability-2" > <svg width="1.6rem" height="1.6rem" viewBox="0 0 16 16" aria-hidden="true" focusable="false"> <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect> </svg>
     <svg aria-hidden="true" class="icon icon-checkmark" width="1.1rem" height="0.7rem" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path> </svg> <span class="facet-checkbox__text" >Out of stock </span> <span aria-hidden="true"class="visually-hidden">Out of stock (0 products)</span> </label> </li></ul>
@@ -48,12 +46,11 @@ if (window.location.href.includes("search")) {
 
 }
 
-console.log("chl_pda")
 async function getAccessToken() {
   const store = location.href.split('https://');
   const shopsplit = store[1].split('/');
   const shop = shopsplit[0];
-  const response = await fetch(`https://panama-forget-mechanisms-trans.trycloudflare.com/api/get?shop=${shop}`);
+  const response = await fetch(`https://cartridge-ep-draft-supplies.trycloudflare.com/api/get?shop=${shop}`);
   if (response.ok) {
     const data = await response.json();
     // document.querySelector(data.resultClassName).innerHTML = '';
@@ -141,11 +138,6 @@ async function search(hello = "") {
     // document.querySelector(resultClassName).innerHTML = '';
     const getSearchValue = await getSearchQuery();
 
-    console.log('Result Class Name:', resultClassName);
-    console.log("getSearchValuegetSearchValuegetSearchValue=============>", getSearchValue);
-
-    console.log("resultClassNameresultClassNameresultClassName=============>", resultClassName);
-
     if (getSearchValue.searchQuery !== null) {
       const loaderHTML = `<img style="margin:auto;text-align:center;" src='https://cdn.shopify.com/s/files/1/0595/6744/0038/files/hzk6C.gif?v=1704974161' /> `;
       if (document.querySelector(resultClassName)) {
@@ -220,14 +212,14 @@ async function search(hello = "") {
     </a>
     </facet-remove>`;
     filters = filters.replace(/\[\[FACET\]\]/g, inner_facets);
+
+
+
     const raw = JSON.stringify({
-      "storeId": "7adb5475-53dc-433e-9301-38d9589ba7d3",
-      "secretKey": tokenAndSecretId.secretId,
-      "searchText": getSearchValue.searchQuery,
-      "SortBy": getSearchValue.sort_by,
-      "minPrice": getSearchValue.minPrice, "maxPrice": getSearchValue.maxPrice, "isAvailable": getSearchValue.availability
-    });
-    console.log(raw, "rawwwwwwwwwww");
+      query: "query Suggestions($integration_id: String!, $text_query: String!, $filter_query: JSONObject, $limit: Int!) {\n    suggestions(query: { integration_id: $integration_id, text_query: $text_query, filter_query: $filter_query, limit: $limit }) {\n        has_more\n        skip\n        limit   \n        data {\n            alias\n            image\n            name\n            url\n            price   \n            price_discounted\n            sizes\n        }\n    }\n}\n",
+      variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","limit":30,"text_query":getSearchValue.searchQuery,"filter_query":{}}
+    })
+    // console.log(raw, "rawwwwwwwwwww");
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -235,8 +227,7 @@ async function search(hello = "") {
       redirect: 'follow'
     };
     try {
-      const searchProduct = await fetch("https://api.test.platform.anari.ai/shopify/search", requestOptions);
-
+      const searchProduct = await fetch("https://api.miros.services/graphql", requestOptions);
       if (!searchProduct.ok) {
         throw new Error(`HTTP error! Status: ${searchProduct.status}`);
       }
@@ -269,7 +260,7 @@ async function search(hello = "") {
         elements[i].textContent = modifiedText;
       }
       const productJSON = await searchProduct.json();
-      if (productJSON.products.length > 0) {
+      if (productJSON.data.suggestions.data.length > 0) {
         if (document.getElementById('ProductCountDesktop')) {
 
           // Get the element with the specified role attribute and content then hide the element
@@ -277,7 +268,7 @@ async function search(hello = "") {
             console.log("under if condition");
             document.querySelector('p[role="status"]').style.display = 'none';
           }
-          document.getElementById('ProductCountDesktop').innerHTML = productJSON.products.length + " results";//facet-checkbox__text
+          document.getElementById('ProductCountDesktop').innerHTML = productJSON.data.suggestions.data.length + " results";//facet-checkbox__text
         }
         else {
           // Get the element with the specified role attribute and content then hide the element
@@ -327,19 +318,21 @@ async function search(hello = "") {
           console.log("Checkbox checked because filter.v.availability=0");
       }
 
-        console.log(productJSON.products, "productJSON.products");
-        const htmlContent = productJSON.products.map((value, index) => {
+        console.log(productJSON.data.suggestions.data, "productJSON.products");
+        const htmlContent = productJSON.data.suggestions.data.map((value, index) => {
+          console.log("value:::::::::::::value",value)
           let changeText = tokenAndSecretId.Html;
-          var handle = value.link.substring(value.link.indexOf("products"));
-          changeText = changeText.replace(/\[\[TITLE\]\]/g, value.title);
+          //var handle = value.url.substring(value.url.indexOf("products"));
+          changeText = changeText.replace(/\[\[TITLE\]\]/g, value.name);
           changeText = changeText.replace(/\[\[PRICE\]\]/g, value.price.toFixed(2));
-          changeText = changeText.replace(/\[\[IMAGESRC\]\]/g, value.imageSrc);
-          changeText = changeText.replace(/\[\[HANDLE\]\]/g, handle);
+          changeText = changeText.replace(/\[\[IMAGESRC\]\]/g, value.image);
+          changeText = changeText.replace(/\[\[HANDLE\]\]/g, "https://quickstart-db2dc1d6.myshopify.com/"+value.url);
           return `${changeText}`;
         }).join('');
 
-        console.log('Anari Results');
+        console.log('Anari Results',htmlContent);
         document.querySelector(resultClassName).innerHTML = htmlContent || '';
+        document.querySelector(resultClassName).style.visibility="visible";
       }
       else {
         mainHTML = mainHTML.replace(/style="visibility:hidden"/g, '');
@@ -360,7 +353,6 @@ async function search(hello = "") {
       }
     } catch (error) {
       var ulElement = document.getElementById('main-search-ul');
-
       // Loop through each <ul> element and set visibility to 'visible'
       if (ulElement) {
         ulElement.style.visibility = 'visible';
@@ -371,10 +363,6 @@ async function search(hello = "") {
       document.querySelector(resultClassName).innerHTML = mainHTML || '';
       console.error('Error fetching data:', error.message);
     }
-
-
-
-
   }
 
 
@@ -382,7 +370,6 @@ async function search(hello = "") {
 let change_url = [];
 search(); // call search function
 setInterval(async function () {
-
 
   if (previous_url != window.location.href && window.location.href.includes("search")) {
 

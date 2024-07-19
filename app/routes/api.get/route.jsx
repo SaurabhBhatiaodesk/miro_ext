@@ -17,6 +17,6 @@ export async function loader({ request }) {
   const currectShop = token?.shop;
   console.log(accessToken);
   console.log(currectShop);
-  return await cors(request, json({ accessToken: accessToken, secretId :'02b02d849e931118bdf6c9a027136c32' ,resultClassName: serachClass.resultClassName ,Html:serachClass.html,filter:serachClass.filter}));
+  return await cors(request, json({ accessToken: accessToken, secretId :'02b02d849e931118bdf6c9a027136c32' ,resultClassName: serachClass.resultClassName ,Html:serachClass.html,filter:serachClass.filter , suggestionSearch :serachClass.suggestionSearch , htmlSuggestion :serachClass.htmlSuggestion }));
 }
 

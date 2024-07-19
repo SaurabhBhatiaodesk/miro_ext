@@ -34,5 +34,7 @@ model searchClass {
   id          Int       @id @default(autoincrement())
   shop        String
   resultClassName String
-  html     String
+  html        String
+  suggestionSearch  String
+  htmlSuggestion   String
 }

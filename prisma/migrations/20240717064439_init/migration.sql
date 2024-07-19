@@ -25,6 +25,8 @@ CREATE TABLE "searchClass" (
     "shop" TEXT NOT NULL,
     "resultClassName" TEXT NOT NULL,
     "html" TEXT NOT NULL,
+    "suggestionSearch" TEXT NOT NULL,
+    "htmlSuggestion" TEXT NOT NULL,
 
     CONSTRAINT "searchClass_pkey" PRIMARY KEY ("id")
 );

@@ -1,0 +1,45 @@
+<script id="product-data" type="application/json">
+{
+  "products": [
+    {% for product in collection.products %}
+      {
+        "product_id": "{{ product.id }}",
+        "variant_id": "{{ product.selected_or_first_available_variant.id }}"
+      }{% if forloop.last %}{% else %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Parse the embedded product data
+    var productData = JSON.parse(document.getElementById('product-data').textContent);
+    // Create a map for quick lookup of variant IDs by product ID
+    var productMap = {};
+    productData.products.forEach(function(product) {
+        productMap[product.product_id] = product.variant_id;
+    });
+    var id_title=document.querySelectorAll('[id^="title-template"]');
+    // Find all elements with IDs matching the pattern and create buttons
+    document.querySelectorAll('[id^="title-template"]').forEach(function(element) {
+        var id = element.id;
+        var productId = id.split('__product-grid-')[1];
+        // Get the variant ID from the productMap
+        var variantId = productMap[productId];
+        if (variantId) {
+            // Create button element
+            var button = document.createElement('button');
+            button.textContent = 'Extension Button';
+            button.className = 'miros-item product-form__submit button button--full-width button--secondary';
+            button.setAttribute('data-miros-item', variantId);
+            button.setAttribute('data-miros-entry', 'custom');
+            // Create li element and append the button to it
+            var li = document.createElement('li');
+            li.className = 'grid__item';
+            li.appendChild(button);
+            // Append the li element to the product's parent element or a specific container
+            element.parentElement.appendChild(li);
+        }
+    });
+});
+</script>

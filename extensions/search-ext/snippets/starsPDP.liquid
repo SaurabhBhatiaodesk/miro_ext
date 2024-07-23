@@ -1,0 +1,15 @@
+{% assign product_id = product.selected_or_first_available_variant.id %}
+
+<button data-miros-item="{{ product_id }}" data-miros-entry="custom" class="miros-item product-form__submit button button--full-width button--secondary">
+  extension button
+</button>
+
+<style>
+  [data-miros-item] {
+    display: none;
+  }
+
+  [data-miros-item].miros-supported {
+    display: block;
+  }
+</style>

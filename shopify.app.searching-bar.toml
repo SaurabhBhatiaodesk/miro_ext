@@ -3,7 +3,7 @@
 client_id = "f1e5c28469bdf4e1ab3836f5a80b4d62"
 name = "searching_bar"
 handle = "searching_bar"
-application_url = "https://cameroon-clinton-proportion-workflow.trycloudflare.com"
+application_url = "https://responsible-viewers-assembled-hans.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://cameroon-clinton-proportion-workflow.trycloudflare.com/auth/callback",
-  "https://cameroon-clinton-proportion-workflow.trycloudflare.com/auth/shopify/callback",
-  "https://cameroon-clinton-proportion-workflow.trycloudflare.com/api/auth/callback"
+  "https://responsible-viewers-assembled-hans.trycloudflare.com/auth/callback",
+  "https://responsible-viewers-assembled-hans.trycloudflare.com/auth/shopify/callback",
+  "https://responsible-viewers-assembled-hans.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -123,26 +123,117 @@ button a {
 const filters_static = `
   <div class="checkbox-container">
             <label>
-                <input type="checkbox" value="POKEMON">
+                <input type="checkbox" onclick="getBrand(this.value)" value="POKEMON">
                 POKEMON
             </label>
             <label>
-                <input type="checkbox" value="LEGO">
+                <input type="checkbox" onclick="getBrand(this.value)" value="LEGO">
                 LEGO
             </label>
         </div>
 `;
+  async function getSearchQuery() {
+  const currentURL = window.location.href;
+  const url = new URL(currentURL);
+  const searchQuery = url.searchParams.get('q');
+  const selectedBrands = getSelectedValues() || [];
+  const search = { searchQuery: searchQuery, selectedBrands: selectedBrands };
+  return search;
+}
+
+function getSelectedValues() {
+  console.log("entered into functionnnn")
+  const selectedCheckboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
+  const values = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+  return values;
+}
+
+async function getBrand(value) {
+  console.log("entered into functionnnnnnnn")
+  const getSearchValue = await getSearchQuery();
+  console.log("getSearchQuerygetSearchQueryyy", getSearchValue)
+
+  const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json")
+const resultClassName = localStorage.getItem("resultClassName")
+let raw;
+ raw = JSON.stringify({
+  query: "query Search($integration_id: String!, $filter_query: JSONObject) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query }) {\n        filter_facets\n        has_more\n        skip\n        limit\n        data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+  variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","text_query":getSearchValue?.searchQuery,"filter_query":{"brand":{"__in":getSearchValue?.selectedBrands}}}
+})
+
+if(getSearchValue?.selectedBrands.length == 0){
+raw = JSON.stringify({
+  query: "query Search($integration_id: String!, $filter_query: JSONObject) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query }) {\n        filter_facets\n        has_more\n        skip\n        limit\n        data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+  variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","text_query":getSearchValue?.searchQuery,"filter_query":{}}
+})
+}
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    try {
+      const searchProduct = await fetch("https://api.miros.services/graphql", requestOptions);
+      console.log("searchProductsearchProductttt",searchProduct)
+if (!searchProduct.ok) {
+        throw new Error(`HTTP error! Status: ${searchProduct.status}`);
+      }
+
+
+       productJSON = await searchProduct.json();
+       console.log("tokenAndSecretId.Html",tokenAndSecretId.Html,"productJSONproductJSONNNNyy",productJSON)
+console.log("productJSON.data.search.data.length",productJSON.data.search.data.length)
+      if (productJSON.data.search.data.length > 0) {
+      const statusElement = document.querySelector('p[role="status"]');
+      console.log("statusElementtt",statusElement)
+      if (statusElement) {
+        statusElement.style.display = 'none';
+      }
+const tokenAndSecretId = await getAccessToken();
+
+      const htmlContent = productJSON.data.search.data.map((value, index) => {
+        console.log("Mapping value:", value, "index:", index);
+        let changeText = tokenAndSecretId.Html || '';
+        if (changeText) {
+          changeText = changeText.replace(/\[\[TITLE\]\]/g, value.name);
+          changeText = changeText.replace(/\[\[PRICE\]\]/g, value.price.toFixed(2));
+          changeText = changeText.replace(/\[\[IMAGESRC\]\]/g, value.image);
+          changeText = changeText.replace(/\[\[HANDLE\]\]/g, "https://quickstart-db2dc1d6.myshopify.com/" + value.url);
+        } else {
+          console.error("tokenAndSecretId.Html is undefined");
+        }
+
+        console.log("Modified changeText:", changeText);
+        return `${changeText}`;
+      }).join('');
+
+      document.querySelector(resultClassName).innerHTML = htmlContent || '';
+      document.querySelector(resultClassName).style.visibility = "visible";
+      }
+ } catch (error) {
+    console.error("Error in getBrand:", error);
+  }
+
+    console.log("getSearchValueeeee",getSearchValue?.searchQuery)
+
+
+
+
+
+
+}
+
+
+
+
 
 
 // Insert the HTML into the container
      // document.getElementById('selector-container').innerHTML = filters_static;
         // Function to get selected values
-        function getSelectedValues() {
-          console.log("entered into functionnnn")
-            const selectedCheckboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
-            const values = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-            return values;
-        }
 
         // Example usagesssss
         setInterval(()=>{
@@ -178,7 +269,7 @@ async function getAccessToken() {
   const store = location.href.split('https://');
   const shopsplit = store[1].split('/');
   const shop = shopsplit[0];
-  const response = await fetch(`https://kits-anchor-divisions-derby.trycloudflare.com/api/get?shop=${shop}`);
+  const response = await fetch(`https://boats-ads-complimentary-experiences.trycloudflare.com/api/get?shop=${shop}`);
   if (response.ok) {
     const data = await response.json();
     console.log("resultClassNameresultClassName",data)
@@ -210,14 +301,12 @@ async function loader() {
 
 loader(); // call loader function
 
-async function getSearchQuery() {
-  const currentURL = window.location.href;
-  const url = new URL(currentURL);
-  const searchQuery = url.searchParams.get('q');
-  const selectedBrands = getSelectedValues() || [];
-  const search = { searchQuery: searchQuery, selectedBrands: selectedBrands };
-  return search;
-}
+
+
+
+
+
+
 
 async function search(hello = "") {
   const tokenAndSecretId = await getAccessToken();
@@ -300,7 +389,7 @@ async function search(hello = "") {
 
 const raw = JSON.stringify({
   query: "query Search($integration_id: String!, $filter_query: JSONObject) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query }) {\n        filter_facets\n        has_more\n        skip\n        limit\n        data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
-  variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","text_query":getSearchValue.searchQuery,"filter_query":{"brand":{"__in":getSearchValue.selectedBrands}}}
+  variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","text_query":getSearchValue.searchQuery,"filter_query":{}}
 })
     const requestOptions = {
       method: 'POST',
@@ -341,7 +430,6 @@ const raw = JSON.stringify({
           console.log("changeText",changeText)
           return `${changeText}`;
         }).join('');
-        console.log("htmlContenthtmlContenthtmlContenthtmlContent",htmlContent)
         document.querySelector(resultClassName).innerHTML = htmlContent || '';
         document.querySelector(resultClassName).style.visibility="visible";
       }

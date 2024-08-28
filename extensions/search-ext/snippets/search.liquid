@@ -1,0 +1,873 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<style>
+  /* SEARCH BAR CONTAINER */
+  .search-local {
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+    padding-left: 2rem;
+    background: #fff;
+    border-radius: 1rem;
+    height: auto;
+    border: 0.1rem solid blue;
+    border-right: none;
+        width: 40%;
+      margin: auto;
+  }
+  
+  
+  /* INPUT */
+  .search-local input {
+    height: 100%;
+    width: 100%;
+    flex: 1 1 25rem;
+    display: flex;
+    outline: none;
+    border: none;
+    font-size: 16px;
+      padding: 10px 11px;
+      background: transparent;
+  }
+  input[type="text"]::placeholder {
+     font-size: 16px;
+  }
+   .search_resultAPP {
+      max-height: 30rem;
+      overflow: auto;
+      padding: 10px;
+        width: 40%;
+      margin: auto;
+  }
+  *:focus-visible{
+    outline:0px !important;
+    box-shadow:none !important;
+  }
+  /* BUTTON */
+  .search-local button {
+      background: blue;
+      border: none;
+      border-radius: 0 1rem 1rem 0;
+      font-weight: 500;
+      font-size: 16px;
+      height: 4rem;
+      padding: 0px 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+  }
+  
+  button a {
+    color: #fff;
+      text-decoration: auto;
+  }
+  .product_data p {
+      margin: 0;
+      color: #fff;
+  }
+  
+  .product_data {
+      display: flex;
+      margin-top: 10px;
+  }
+  .main_result {
+      display: flex;
+      align-items: center;
+  }
+  
+  .main_result img {
+      height: 44px;
+      object-fit: cover;
+      width: 60px;
+      margin-right: 10px;
+  }
+  .search_result {
+      margin-top: 1rem;
+      background: transparent;
+      padding: 10px;
+      border: 1px solid #ccccccc7;
+  
+  }
+  .main_result{
+      margin-bottom: 10px;
+  
+  }
+  /* MEDIAS */
+  @media (max-width: 767px) {
+    .search-local {
+      padding-left: 16px;
+      column-gap: 0.25rem;
+      width:100%;
+    }
+  
+    .search-local button {
+      width: 10rem;
+    }
+      input[type="text"]::placeholder {
+     font-size: 16px;
+  }
+    .search_resultAPP{
+      width:100%;
+    }
+  }
+  /*----22-08-2024-Start--*/
+  .collection{
+    position:relative;
+  }
+  .collection ul#product-grid {
+    max-width: 100%;
+    width: 100%;
+    float: right;
+    margin: 0;
+  }
+  .collection .filter-products {
+    max-width: 80% !important;
+  }
+  .collection .vertical-filter span.close {
+    color: #fff;
+    font-size: 16px;
+    float: right;
+    margin-top: -10px;
+    background: #000;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    line-height: 17px;
+    padding: 2px;
+    margin-bottom: 20px;
+  }
+  .collection .filter-scroll {
+    left: 0;
+    max-width: 20% !important;
+    position: relative;
+    height:100%;
+  }
+  
+  .collection .pagination-wrapper {
+    float: left;
+    width: 100%;
+  }
+  .collection {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 3rem;
+  }
+  .vertical-filter {
+    max-width: 20%;
+    width: 100%;
+    padding-right: 2rem;
+    position: absolute;
+    left: -100%;
+    overflow: hidden;
+    transition:all 0.5s linear;
+    -webkit-transition:all 0.5s linear;
+    -moz-transition:all 0.5s linear;
+  }
+  .ver-filter .filter-list-type .checkbox {
+    margin-right: 0px;
+    visibility: hidden;
+    position:absolute;
+  }
+  .ver-filter{
+    margin-bottom: 0px;
+    padding-bottom: 25px;
+  }
+  .ver-filter:last-child{
+    border-bottom:none;
+  }
+  .ver-filter .filtering-src {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .ver-filter ul.filter-list-type {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .vertical-filter .ver-filter span {
+    font-size: 1.4rem;
+    color: #424242;
+  }
+  .vertical-filter .ver-filter label {
+    color: #424242;
+    font-size: 1.3rem;
+    text-transform: lowercase;
+    width: 100%;
+    z-index:11;
+    padding-right:10px;
+  }
+  .vertical-filter h2.filter-heading {
+    margin: 0 0 2rem;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+  }
+   .vertical-filter .price ul.filter-list-type li input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 7px;
+    margin-right: 10px;
+    padding: 7px;
+  }
+  .vertical-filter .price ul.filter-list-type li input::placeholder {
+    font-size: 14px;
+  }
+  .vertical-filter .price ul.filter-list-type {
+    display: flex;
+    gap: 10px;
+  }
+  .vertical-filter .sort-by .filter-list-type select {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 7px;
+    background: transparent;
+  }
+  .collection-filter-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0;
+  }
+  .ver-filter ul.filter-list-type li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    position:relative;
+  }
+  .brands ul.filter-list-type li::before,.categories ul.filter-list-type li::before {
+    position: absolute;
+    content: "";
+    background: transparent;
+    border: 1px solid #d5d2d2;
+    width: 15px;
+    height: 15px;
+    right: 0;
+    top: 3px;
+  }
+  .brands ul.filter-list-type li:hover::after, .categories ul.filter-list-type li:hover::after {
+    background: #ccc;
+    opacity:1;
+  }
+  .brands ul.filter-list-type li::after, .categories ul.filter-list-type li::after {
+    background: #ccc;
+    opacity:1;
+  }
+  .brands ul.filter-list-type li.show::after, .categories ul.filter-list-type li.show::after {
+    position: absolute;
+    content: "";
+    background: #000;
+    width: 8px;
+    height: 8px;
+    top: 6px;
+    right: 3px;
+  }
+  .vertical-filter .ver-filter label::first-letter {
+    text-transform: uppercase;
+  }
+  .vertical-filter .ver-filter .filter-tag {
+    font-weight: bold;
+  }
+  .filter-top-btn {
+    width: 100%;
+    height: 46px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    margin-bottom:10px;
+  }
+  .filter-top-btn span.filter-tag {
+    border: none;
+    padding: 5px 12px;
+    background: #222;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .closetab {
+    display: none;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    width: 22px;
+    float: right;
+    border-radius: 50%;
+    height: 22px;
+    line-height: 20px;
+    position: relative;
+    top: -10px;
+  }
+  /*-----Rangle Slider-Start---*/
+  
+  .price-input-container {
+    width: 100%;
+  }
+  .price-input strong {
+    display: flex;
+    align-items: center;
+  }
+  .price-input .price-field {
+    display: flex;
+    margin-top: 20px;
+    align-items: center;
+    max-width: 50%;
+  }
+  .price-field input {
+    height: 35px;
+    font-size: 1.3rem;
+    text-align: right;
+    border-radius: 0;
+    border: none;
+    width: 100%;
+    background: transparent;
+  }
+  .price-field{
+    border: none;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .price-input {
+    width: 100%;
+    font-size: 14px;
+    color: #424242;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+  /* Remove Arrows/Spinners */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .slider-container {
+    width: 100%;
+  }
+  .price-input .price-field span {
+    font-size: 1.3rem;
+    color: #424242;
+  }
+  .slider-container {
+    height: 4px;
+    position: relative;
+    background: #e4e4e4;
+    border-radius: 5px;
+  }
+  
+  .slider-container .price-slider {
+    height: 100%;
+    left: 25%;
+    right: 15%;
+    position: absolute;
+    border-radius: 5px;
+    background: #424242;
+  }
+  
+  .range-input {
+    position: relative;
+  }
+  
+  .range-input input {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: none;
+    top: -8px;
+    pointer-events: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+  .custom-wrapper {
+    width: 100%;
+  }
+  /* Styles for the range thumb in WebKit browsers */
+  input[type="range"]::-webkit-slider-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 70%;
+    background: #555;
+    pointer-events: auto;
+    -webkit-appearance: none;
+  }
+  
+  
+  /*----Range Slider-End-----*/
+  
+  @media screen and (max-width:991px){
+     .collection ul.filter-products {
+        max-width: 70% !important;
+      }
+      .collection .filter-scroll {
+        max-width: 30% !important;
+      }
+  }
+  
+  @media screen and (max-width:767px){
+    .collection ul.filter-products {
+      max-width: 100% !important;
+    } 
+    .collection .vertical-filter {
+      position: fixed;
+      background: #fff;
+      left: -100%;
+      top: 0px;
+      z-index: 11;
+      padding: 2rem;
+    }
+    .collection .filter-scroll {
+      max-width: 280px !important;
+      left: 0 !important;
+      max-height: 100%;
+      overflow: auto;
+    }
+    .closetab{
+      display:block;
+    }
+  }
+  
+  /*----22-08-2024-End---*/
+  
+  </style>
+<body>
+    <script>
+      function filterScroll(obj) {
+        let verticalFilter = obj.nextElementSibling;
+        if (verticalFilter && verticalFilter.classList.contains('vertical-filter')) {
+            verticalFilter.classList.toggle('filter-scroll');
+        }
+    
+        // Toggle "filter-products" class on the .product-grid element
+        let productGrid = document.querySelector('.collection .product-grid');
+        if (productGrid) {
+            productGrid.classList.toggle('filter-products');
+        }
+      }
+  
+      function closetab(obj) {
+        // Find the closest or sibling .vertical-filter element
+        let verticalFilter = obj.closest('.vertical-filter');
+        
+        // Remove the filter-scroll class if it exists
+        if (verticalFilter && verticalFilter.classList.contains('filter-scroll')) {
+            verticalFilter.classList.remove('filter-scroll');
+        }
+    }
+      let facets = `<div class="filter-top-btn" onclick="filterScroll(this)">
+              <span class="filter-tag">Filter</span>
+              </div>
+          <div class="vertical-filter">
+            <span class="closetab" onclick="closetab(this)">x</span>
+          <div class="ver-filter sort-by">
+              {% comment %} <div class="filtering-src">
+                <span class="filter-tag">Sort By</span>
+                <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
+                  <defs>
+                  </defs>
+                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                  	<path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                  </g>
+                  </svg>
+                </span>
+              </div> {% endcomment %}
+
+                <div class="filter-list-type">
+                <select onchange="sortingMiro(this.value);" name="sort_by"  id="SortBy">
+                <option value="score-asc" selected="selected">
+                        Score, low to high
+                      </option><option value="score-desc">
+                        Score, high to low
+                      </option><option value="price-asc">
+                        Price, low to high
+                      </option><option value="price-desc">
+                        Price, high to low
+                      </option><option value="discount_percentage-asc">
+                        Discount Percentage, low to high
+                      </option><option value="discount_percentage-desc">
+                        Discount Percentage, high to low
+                      </option></select>
+                </div>
+            </div>
+
+ 
+           <div class="ver-filter categories">
+              <div class="filtering-src">
+                <span class="filter-tag">Category</span>
+                <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
+                  <defs>
+                  </defs>
+                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                  	<path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                  </g>
+                  </svg>
+                </span>
+              </div>
+                <ul class="filter-list-type">
+                 [[CATEGORIES]]
+                </ul>
+            </div>
+
+
+            <div class="ver-filter brands">
+              <div class="filtering-src">
+                <span class="filter-tag">Brand</span>
+                <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
+                  <defs>
+                  </defs>
+                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                  	<path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                  </g>
+                  </svg>
+                </span>
+              </div>
+                <ul class="filter-list-type">
+                  [[BRANDS]]
+                </ul>
+            </div>
+                     
+
+            <div class="ver-filter price">
+                <div class="filtering-src">
+                  <span class="filter-tag">Price</span>
+                  <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
+                    <defs>
+                    </defs>
+                    <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                    	<path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                    </g>
+                    </svg>
+                  </span>
+                </div>
+               {% comment %} <ul class="filter-list-type">
+                  <li><input type="number" placeholder="From" onfocusout="priceMiro('from',this.value)" name="fromPriceMiro" id="fromPriceMiro" class="verput-box" /></li>
+                  <li><input type="number" placeholder="To" onfocusout="priceMiro('to',this.value)" name="toPriceMiro" id="toPriceMiro" class="verput-box" /></li>
+                </ul>  {% endcomment %}
+
+
+                  <div class="custom-wrapper">
+    <div class="price-input-container">
+        <div class="slider-container">
+            <div class="price-slider"></div>
+        </div>
+        <!-- Slider -->
+        <div class="range-input">
+            <input type="range" class="min-range" min="0" max="10000" value="0" step="1">
+            <input type="range" class="max-range" min="0" max="10000" value="8500" step="1">
+        </div>
+
+        <div class="price-input">
+            <div class="price-field">
+                <span>$</span> <input type="number" class="min-input" value="0">
+            </div>
+            <strong>_</strong>
+            <div class="price-field">
+                <span>$</span> <input type="number" class="max-input" value="8500">
+            </div>
+        </div>
+    </div>
+</div>
+              </div>
+
+                
+          </div>`;
+    const currentURLplp = window.location.href;
+    const urlplp = new URL(currentURLplp);
+    const pagePLP = urlplp.searchParams.get('page') || 1;
+    const pageNext = parseInt(pagePLP)+1;
+    const pagePrevious = pagePLP<=1?1:(parseInt(pagePLP)-1);
+    const pagingplp=`<nav class="pagination" role="navigation" aria-label="Pagination">
+      <ul class="pagination__list list-unstyled" role="list">
+      <li>
+            <a href="/collections/all?page=${pagePrevious}" class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce" aria-label="Previous page"><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+</path></svg>
+
+            </a>
+          </li>
+     <li><span class="pagination__item">…</span></li>
+      <li>
+            <a href="/collections/all?page=${pageNext}" class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce" aria-label="Next page"><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+</path></svg>
+</a>
+          </li></ul>
+    </nav>`;
+      getFacetsplp();
+  function priceMiro(type, price){
+    console.log(type,price);
+  }
+  function sortingMiro(value)
+  {
+    localStorage.setItem("sortBy", value);
+    updateFiltersplp();
+  }
+  async function getSearchQueryplp() {
+            const currentURL = window.location.href;
+            const url = new URL(currentURL);
+            const searchQuery = url.searchParams.get('q') || "";
+            const page = url.searchParams.get('page') || 1;
+            const { selectedBrands, selectedCategories } = await getSelectedValuesplp();
+            console.log(selectedBrands, selectedCategories,"under getSearchQueryplp")
+            let minPrice=document.querySelector('.min-input').value || 0;
+            let maxPrice=document.querySelector('.max-input').value || 1000;
+            const sort_by = localStorage.getItem("sortBy") || "score-asc";
+      
+            return { searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page,sort_by };
+        }
+ async function getFacetsplp() {
+  if(document.getElementById("FacetFiltersForm")){
+  document.getElementById("FacetFiltersForm").style.display = "none";
+  }
+  setTimeout(() =>{
+    if(document.querySelector(".pagination__list")){
+    if(document.querySelector(".pagination-wrapper"))
+        {
+          console.log("under pagination-wrapper");
+          document.querySelector(".pagination-wrapper").innerHTML = pagingplp;
+        }
+    }
+    updateFiltersplp();
+    console.log("under price slider-wrapper");    
+    document.querySelector('.min-range').addEventListener('input', function(e) {
+      let minValue = e.target.value;
+      console.log('Min range input triggered:', minValue);
+      document.querySelector('.min-input').value = minValue;
+      setTimeout(function() {
+        updateFiltersplp();
+      },1000);
+    });
+
+    document.querySelector('.min-input').addEventListener('input', function(e) {
+      let minValue = e.target.value;
+      console.log('Min input field triggered:', minValue);
+      document.querySelector('.min-range').value = minValue;
+      setTimeout(function() {
+        updateFiltersplp();
+      },1000);
+    });
+    document.querySelector('.max-range').addEventListener('input', function(e) {
+      let maxValue = e.target.value;
+      console.log('Max range input triggered:', maxValue);
+      document.querySelector('.max-input').value = maxValue;
+    });
+
+    document.querySelector('.max-input').addEventListener('input', function(e) {
+      let maxValue = e.target.value;
+      console.log('Max input field triggered:', maxValue);
+      document.querySelector('.max-range').value = maxValue;
+    });
+
+  },1000);
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const graphql = JSON.stringify({
+      query: "query Search($integration_id: String!, $filter_query: JSONObject) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query }) {\n        filter_facets\n    }\n}\n",
+      variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","filter_query":{} }
+    })
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: graphql,
+      redirect: "follow"
+    };
+    let fill ='';
+    let fills ='';
+    
+    const response=await fetch("https://api.miros.services/graphql", requestOptions)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const result = await response.json();
+    console.log(result.data.search.filter_facets, "Facets result:");
+    const storedBrands = localStorage.getItem("selectedBrands") || '';
+  const storedCategories = localStorage.getItem("selectedCategories") || '';
+   // Iterate over each brand and its count
+   for (const [brand, count] of Object.entries(result.data.search.filter_facets.brand)) {
+    // Skip non-brand entries (like '__supported_operators')
+    const isChecked = storedBrands.includes(brand) ? 'checked' : '';
+    if (brand !== '__supported_operators') {
+      fills += `<li class="checkbox-container"><input id="${brand}" onclick="updateFiltersplp('brand','${brand}')" value="${brand}" data-filter-type="brand" type="checkbox" name="check" class="checkbox" ${isChecked}/><label for="${brand}">${brand} (${count})</label></li>`; 
+    }
+  }
+  for (const [category, count] of Object.entries(result.data.search.filter_facets.category_name)) {
+    // Skip non-brand entries (like '__supported_operators')
+    const isChecked = storedCategories.includes(category) ? 'checked' : '';
+    if (category !== '__supported_operators') {
+      fill += `<li class="checkbox-container"><input id="${category}" onclick="updateFiltersplp('category','${category}')" data-filter-type="category" value="${category}" type="checkbox" name="check" class="checkbox" ${isChecked}/><label for="${category}">${category} (${count})</label></li>`;
+    }
+  }
+  facets = facets.replace(/\[\[BRANDS\]\]/g, fills);
+  facets = facets.replace(/\[\[CATEGORIES\]\]/g, fill);
+  
+  document.getElementById('product-grid').insertAdjacentHTML('beforebegin', facets);
+  
+}
+ async function getSelectedValuesplp() {
+  
+      const selectedBrands =   [];
+      const selectedCategories =  [];
+      const allLiElements = document.querySelectorAll('.checkbox-container');
+      allLiElements.forEach(li => li.classList.remove('show'));
+      const selectedCheckboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
+      console.log(selectedCheckboxes,"selectedCheckboxes");
+      if(selectedCheckboxes){
+      selectedCheckboxes.forEach(checkbox => {
+          const filterType = checkbox.getAttribute('data-filter-type');
+          if (filterType === 'brand') {
+              selectedBrands.push(checkbox.value);
+          } else if (filterType === 'category') {
+              selectedCategories.push(checkbox.value);
+          }
+          const parentLi = checkbox.closest('li');
+          if (parentLi) {
+              parentLi.classList.add('show');
+          }
+      }); 
+      console.log(selectedBrands.join(', '));
+      console.log(selectedCategories.join(', '));
+      localStorage.setItem("selectedBrands", selectedBrands)
+      localStorage.setItem("selectedCategories", selectedCategories)
+      return { selectedBrands, selectedCategories };
+    } else{
+      const brands = localStorage.getItem("selectedBrands").split(",");
+      const category = localStorage.getItem("selectedCategories").split(",");
+      console.log(category,brands);
+      return {brands,category};
+    }
+  }
+       async function updateFiltersplp() {
+            const { searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page, sort_by } = await getSearchQueryplp();
+            console.log('Filters:', { searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page, sort_by });
+            await getBrandplp(searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page,sort_by);
+        }
+        
+        
+async function getBrandplp(searchQuery, brands = [], categories = [], minPrice = '', maxPrice = '',page = 1,sort_by='') {
+  const sort=sort_by.split("-");
+  console.log("sort::=>",sort)
+  let final_sort={};
+  if(sort[0]!='' && sort[0]!='manual')
+  {
+     final_sort={field: sort[0], order: sort[1]};
+  }
+ 
+  const filterQuery = {};
+            // Add filters only if they are present
+            if (brands.length > 0) {
+                filterQuery.brand = { __in: brands };
+            }
+            if (categories.length > 0) {
+                filterQuery.category_name = { __in: categories };
+            }
+            if (minPrice || maxPrice) {
+                filterQuery.price = {};
+                if (minPrice) filterQuery.price.__gte = Number(minPrice);
+                if (maxPrice) filterQuery.price.__lte = Number(maxPrice);
+            }
+            const limit = 40;
+            const skip = (page-1)*limit;
+  const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json")
+const resultClassName = localStorage.getItem("resultClassName")
+let raw;
+
+raw = JSON.stringify({
+  query: "query Search($integration_id: String!, $filter_query: JSONObject,$limit: Int, $skip: Int,$sort:SortOption) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query,limit:$limit,skip:$skip,sort:$sort }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+  variables: {
+                    integration_id: "ba5e511a-4052-44fc-88b7-01f1cfee9a77",
+                    text_query: searchQuery,
+                    filter_query: filterQuery,
+                    limit: limit,
+                    skip: skip,
+                    sort:final_sort
+                }
+})
+console.log("raw:::",raw);
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    try {
+      const searchProduct = await fetch("https://api.miros.services/graphql", requestOptions);
+      
+if (!searchProduct.ok) {
+        throw new Error(`HTTP error! Status: ${searchProduct.status}`);
+      }
+       productJSON = await searchProduct.json();
+      if (productJSON.data.search.data.length > 0) {
+        if(document.querySelector(".pagination-wrapper"))
+        {
+          document.querySelector(".pagination-wrapper").innerHTML = pagingplp;
+        }
+      const statusElement = document.querySelector('p[role="status"]');
+      console.log("statusElementtt",statusElement)
+      if (statusElement) {
+        statusElement.style.display = 'none';
+      }
+const tokenAndSecretId = await getAccessTokenplp();
+
+      const htmlContent = productJSON.data.search.data.map((value, index) => {
+        let changeText = tokenAndSecretId.Html || '';
+        if (changeText) {
+          changeText = changeText.replace(/\[\[TITLE\]\]/g, value.name);
+          changeText = changeText.replace(/\[\[PRICE\]\]/g, value.price.toFixed(2));
+          changeText = changeText.replace(/\[\[IMAGESRC\]\]/g, value.image);
+          changeText = changeText.replace(/\[\[HANDLE\]\]/g, "https://quickstart-db2dc1d6.myshopify.com/" + value.url);
+          changeText = changeText.replace(/\[\[PRODUCTID\]\]/g, value.alias);
+        } else {
+          console.error("tokenAndSecretId.Html is undefined");
+        }
+        return `${changeText}`;
+      }).join('');
+
+      document.querySelector(resultClassName).innerHTML = htmlContent || '';
+      document.querySelector(resultClassName).style.visibility = "visible";
+      }
+ } catch (error) {
+    console.error("Error in getBrand:", error);
+  }
+}
+ 
+async function getAccessTokenplp() {
+  const store = location.href.split('https://');
+  const shopsplit = store[1].split('/');
+  const shop = shopsplit[0];
+  const response = await fetch(`https://wallpaper-oaks-pattern-payment.trycloudflare.com/api/get?shop=${shop}`);
+  if (response.ok) {
+    const data = await response.json();
+    console.log("resultClassNameresultClassName",data)
+    localStorage.setItem("resultClassName", data.resultClassName)
+    localStorage.setItem("suggestionSearch", data.suggestionSearch)
+    return data;
+  }
+  else {
+    return {};
+  }
+}
+async function loaderplp() {
+    let resultClassName = localStorage.getItem("resultClassName")
+    if (!resultClassName || resultClassName == ''){
+      const tokenAndSecretId = await getAccessTokenplp();
+      resultClassName = localStorage.getItem("resultClassName")
+    }
+    const loaderHTML = `<img style="margin:auto;text-align:center;" src='https://cdn.shopify.com/s/files/1/0595/6744/0038/files/hzk6C.gif?v=1704974161' /> `;
+    if (document.querySelector(resultClassName)) {
+      mainHTML = document.querySelector(resultClassName).innerHTML;
+      document.querySelector(resultClassName).innerHTML = loaderHTML;
+    } 
+}
+loaderplp();
+  </script>
+</body>

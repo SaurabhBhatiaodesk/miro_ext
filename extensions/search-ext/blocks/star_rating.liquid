@@ -1,6 +1,6 @@
 {% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
 <span style="color:{{ block.settings.colour }}">
-  {% render 'stars', rating: avg_rating %}
+  {% render 'starsnew', rating: avg_rating %}
 
 </span>
 {% if avg_rating >= 4 %}
@@ -11,7 +11,7 @@
 {
   "stylesheet":"search.css",
   "name": "miro AI",
-  "target": "head",
+  "target": "section",
   "settings": [
     { "type": "product", "id": "product", "label": "product", "autofill": true },
     { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }

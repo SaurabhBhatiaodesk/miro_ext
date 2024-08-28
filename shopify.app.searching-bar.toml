@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://wallpaper-oaks-pattern-payment.trycloudflare.com/auth/callback",
-  "https://wallpaper-oaks-pattern-payment.trycloudflare.com/auth/shopify/callback",
-  "https://wallpaper-oaks-pattern-payment.trycloudflare.com/api/auth/callback"
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/callback",
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/shopify/callback",
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/api/auth/callback"
 ]
 
 [webhooks]

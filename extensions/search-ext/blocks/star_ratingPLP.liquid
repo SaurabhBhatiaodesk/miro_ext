@@ -3,6 +3,40 @@
   {% render 'starsPLP', rating: avg_rating %}
   {% render 'search', rating: avg_rating %}
 </span>
+<!-- Add this script to theme.liquid or a common template file -->
+<script>
+  cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
+
+  window.addEventListener('AddItemToCart', function(event) {
+    const productVariantId = event.detail;
+
+    // Perform AJAX request to add item to cart
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{
+          id: productVariantId,
+          quantity: 1,
+        }],
+        sections: 'cart-drawer,cart-icon-bubble'
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Item added to cart:', data);
+      publish(PUB_SUB_EVENTS.cartUpdate, {source: 'miros-overlay', productVariantId});
+      cart.renderContents(data);
+      if (cart && cart.classList.contains('is-empty')) cart.classList.remove('is-empty');
+    })
+    .catch((error) => {
+      console.error('Error adding item to cart:', error);
+    });
+  });
+  </script>
+  <script type="module" src="https://content.miros.services/frontend/public/main/container/assets/container.bundle.js" data-miros-integration-id="ba5e511a-4052-44fc-88b7-01f1cfee9a77"></script>
 
 {% schema %}
 {

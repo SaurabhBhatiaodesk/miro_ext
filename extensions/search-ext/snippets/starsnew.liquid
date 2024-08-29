@@ -466,18 +466,6 @@
           <div class="vertical-filter">
             <span class="closetab" onclick="closetab(this)">x</span>
           <div class="ver-filter sort-by">
-              {% comment %} <div class="filtering-src">
-                <span class="filter-tag">Sort By</span>
-                <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
-                  <defs>
-                  </defs>
-                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                  	<path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
-                  </g>
-                  </svg>
-                </span>
-              </div> {% endcomment %}
-
                 <div class="filter-list-type">
                 <select onchange="sortingMiro(this.value);" name="sort_by"  id="SortBy">
                 <option value="score-asc" selected="selected">
@@ -545,23 +533,15 @@
                     </svg>
                   </span>
                 </div>
-               {% comment %} <ul class="filter-list-type">
-                  <li><input type="number" placeholder="From" onfocusout="priceMiro('from',this.value)" name="fromPriceMiro" id="fromPriceMiro" class="verput-box" /></li>
-                  <li><input type="number" placeholder="To" onfocusout="priceMiro('to',this.value)" name="toPriceMiro" id="toPriceMiro" class="verput-box" /></li>
-                </ul>  {% endcomment %}
-
-
                   <div class="custom-wrapper">
     <div class="price-input-container">
         <div class="slider-container">
             <div class="price-slider"></div>
         </div>
-        <!-- Slider -->
         <div class="range-input">
             <input type="range" class="min-range" min="0" max="10000" value="0" step="1">
             <input type="range" class="max-range" min="0" max="10000" value="8500" step="1">
         </div>
-
         <div class="price-input">
             <div class="price-field">
                 <span>$</span> <input type="number" class="min-input" value="0">
@@ -574,8 +554,6 @@
     </div>
 </div>
               </div>
-
-                
           </div>`;
     const currentURLplp = window.location.href;
     const urlplp = new URL(currentURLplp);
@@ -615,8 +593,16 @@
             const page = url.searchParams.get('page') || 1;
             const { selectedBrands, selectedCategories } = await getSelectedValuesplp();
             console.log(selectedBrands, selectedCategories,"under getSearchQueryplp")
-            let minPrice=document.querySelector('.min-input').value || 0;
-            let maxPrice=document.querySelector('.max-input').value || 1000;
+            let minPrice=0;
+            if(document.querySelector('.min-input'))
+            {
+              minPrice = document.querySelector('.min-input').value;
+            }
+            let maxPrice=1000;
+            if(document.querySelector('.max-input'))
+            {
+              maxPrice = document.querySelector('.max-input').value;
+            }
             const sort_by = localStorage.getItem("sortBy") || "score-asc";
       
             return { searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page,sort_by };
@@ -625,47 +611,15 @@
   if(document.getElementById("FacetFiltersForm")){
   document.getElementById("FacetFiltersForm").style.display = "none";
   }
-  setTimeout(() =>{
-    if(document.querySelector(".pagination__list")){
-    if(document.querySelector(".pagination-wrapper"))
-        {
-          console.log("under pagination-wrapper");
-          document.querySelector(".pagination-wrapper").innerHTML = pagingplp;
-        }
+  if(document.getElementById("FacetSortForm")){
+    document.getElementById("FacetSortForm").style.display = "none";
     }
-    updateFiltersplp();
-    console.log("under price slider-wrapper");    
-    document.querySelector('.min-range').addEventListener('input', function(e) {
-      let minValue = e.target.value;
-      console.log('Min range input triggered:', minValue);
-      document.querySelector('.min-input').value = minValue;
-      setTimeout(function() {
-        updateFiltersplp();
-      },1000);
-    });
-
-    document.querySelector('.min-input').addEventListener('input', function(e) {
-      let minValue = e.target.value;
-      console.log('Min input field triggered:', minValue);
-      document.querySelector('.min-range').value = minValue;
-      setTimeout(function() {
-        updateFiltersplp();
-      },1000);
-    });
-    document.querySelector('.max-range').addEventListener('input', function(e) {
-      let maxValue = e.target.value;
-      console.log('Max range input triggered:', maxValue);
-      document.querySelector('.max-input').value = maxValue;
-    });
-
-    document.querySelector('.max-input').addEventListener('input', function(e) {
-      let maxValue = e.target.value;
-      console.log('Max input field triggered:', maxValue);
-      document.querySelector('.max-range').value = maxValue;
-    });
-
-  },1000);
-    
+    const statusElements = document.querySelectorAll('p[role="status"]');
+    if (statusElements.length > 0) {
+      statusElements.forEach(element => {
+        element.style.display = 'none';
+      });
+    }
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -705,11 +659,63 @@
       fill += `<li class="checkbox-container"><input id="${category}" onclick="updateFiltersplp('category','${category}')" data-filter-type="category" value="${category}" type="checkbox" name="check" class="checkbox" ${isChecked}/><label for="${category}">${category} (${count})</label></li>`;
     }
   }
+  const minRange = document.querySelector('.min-range');
+  const maxRange = document.querySelector('.max-range');
+
   facets = facets.replace(/\[\[BRANDS\]\]/g, fills);
   facets = facets.replace(/\[\[CATEGORIES\]\]/g, fill);
+  facets = facets.replace(/\[\[MINIMUM\]\]/g, result?.data?.search?.filter_facets?.price.min);
+  facets = facets.replace(/\[\[MAXIMUM\]\]/g, result?.data?.search?.filter_facets?.price.max);
   
   document.querySelector('.product-grid').insertAdjacentHTML('beforebegin', facets);
-  
+  setTimeout(() =>{
+    
+      
+    if(document.querySelector(".pagination__list")){
+    if(document.querySelector(".pagination-wrapper"))
+        {
+          console.log("under pagination-wrapper");
+          document.querySelector(".pagination-wrapper").innerHTML = pagingplp;
+        }
+    }
+    updateFiltersplp();
+    console.log("under price slider-wrapper");    
+    document.querySelector('.min-range').addEventListener('input', function(e) {
+      let minValue = e.target.value;
+      console.log('Min range input triggered:', minValue);
+      document.querySelector('.min-input').value = minValue;
+      setTimeout(function() {
+        updateFiltersplp();
+      },1000);
+    });
+
+    document.querySelector('.min-input').addEventListener('input', function(e) {
+      let minValue = e.target.value;
+      console.log('Min input field triggered:', minValue);
+      document.querySelector('.min-range').value = minValue;
+      setTimeout(function() {
+        updateFiltersplp();
+      },1000);
+    });
+    document.querySelector('.max-range').addEventListener('input', function(e) {
+      let maxValue = e.target.value;
+      console.log('Max range input triggered:', maxValue);
+      document.querySelector('.max-input').value = maxValue;
+      setTimeout(function() {
+        updateFiltersplp();
+      },1000);
+    });
+
+    document.querySelector('.max-input').addEventListener('input', function(e) {
+      let maxValue = e.target.value;
+      console.log('Max input field triggered:', maxValue);
+      document.querySelector('.max-range').value = maxValue;
+      setTimeout(function() {
+        updateFiltersplp();
+      },1000);
+    });
+
+  },1000);
 }
  async function getSelectedValuesplp() {
   

@@ -1,10 +1,132 @@
 {% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
 <span style="color:{{ block.settings.colour }}">
-  {% render 'starsnew', rating: avg_rating %}
-
+  {% if request.path == '/collections/all' or request.path == '/search' %}
+    {% render 'starsnew', rating: avg_rating %}
+  {% endif %}  
 </span>
  <!-- Add this script to theme.liquid or a common template file -->
  <script>
+  async function getAccessTokenplp() {
+    const store = location.href.split('https://');
+    const shopsplit = store[1].split('/');
+    const shop = shopsplit[0];
+    const response = await fetch(`https://miros-shopify-app-abffbc907e41.herokuapp.com/api/get?shop=${shop}`);
+    if (response.ok) {
+      const data = await response.json();
+      console.log("resultClassNameresultClassName",data)
+      localStorage.setItem("resultClassName", data.resultClassName)
+      localStorage.setItem("suggestionSearch", data.suggestionSearch)
+      return data;
+    }
+    else {
+      return {};
+    }
+  }
+  const currentURLMiro = window.location.href;
+  async function getProductJson(){
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json")
+    const resultClassName = localStorage.getItem("resultClassName")
+    let raw;
+    let searchQuery = 'a';
+    if(document.getElementById('Search-In-Modal'))
+    {
+      searchQuery = document.getElementById('Search-In-Modal').value;
+    }
+    else
+    {
+     
+      const urlplp = new URL(currentURLMiro);
+       searchQuery = urlplp.searchParams.get('q') || '';
+    }
+    
+    raw = JSON.stringify({
+      query: "query Search($integration_id: String!, $filter_query: JSONObject,$limit: Int) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query,limit:$limit }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+      variables: {
+                        integration_id: "ba5e511a-4052-44fc-88b7-01f1cfee9a77",
+                        text_query: searchQuery,
+                        limit: 5,
+                    }
+    })
+    console.log("raw:::",raw);
+        const requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+    
+        
+          const searchProduct = await fetch("https://api.miros.services/graphql", requestOptions);
+          
+    if (!searchProduct.ok) {
+            throw new Error(`HTTP error! Status: ${searchProduct.status}`);
+          }
+         return  productJSON = await searchProduct.json();
+  }
+  
+          if(localStorage.getItem("suggestionSearch"))
+          {}
+          else{}
+            const tokenAndSecretIdPromise = getAccessTokenplp();
+
+            setTimeout(async() =>{
+              if (!currentURLMiro.includes("search") || !currentURLMiro.includes("collections")) {  
+                let productJSON = await getProductJson();
+                  
+                }
+            },100);
+  setInterval(async() =>{
+
+    
+    console.log("DOMContentLoaded recomendation access token and secret",tokenAndSecretIdPromise);
+    tokenAndSecretIdPromise.then(tokenAndSecretId => {
+      console.log("DOMContentLoaded recomendation under then");
+      // Validate that tokenAndSecretId is an object and contains the suggestionSearch property
+      if (tokenAndSecretId && tokenAndSecretId.suggestionSearch) {
+        console.log("get suggestion")
+          console.log("entered into function");
+          console.log("tokenAndSecretId", tokenAndSecretId);
+  
+          if (document.getElementById(tokenAndSecretId?.suggestionSearch)) {
+            // Assuming `productJSON` is available and contains the fetched data
+            if (productJSON && productJSON.data && productJSON.data.search && productJSON.data.search.data) {
+              console.log("productJSON.data.suggestions.data",productJSON.data.search.data)
+              const firstFiveProducts = productJSON.data.search.data.slice(0, 5).map(product => {
+                let changeText = tokenAndSecretId?.htmlSuggestion;
+                changeText = changeText.replace(/\[\[NAME\]\]/g, product.name);
+                changeText = changeText.replace(/\[\[IMAGE\]\]/g, product.image);
+                {% comment %} console.log("changeText", changeText); {% endcomment %}
+                return `
+                  ${changeText}
+                `;
+              }).join('');
+              console.log("firstFiveProducts", firstFiveProducts);
+              document.getElementById(tokenAndSecretId?.suggestionSearch).innerHTML = firstFiveProducts;
+            } else {
+              document.getElementById(tokenAndSecretId?.suggestionSearch).innerHTML = "No products found";
+            }
+          } else {
+            console.error("Element with ID 'predictive-search-results-products-list' not found.");
+          }
+  
+        var predictiveSearchQueriesList = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1)');
+        var predictiveSearchQueriesList1 = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(2)');
+          if (predictiveSearchQueriesList) {
+            predictiveSearchQueriesList.style.display = 'none';
+            predictiveSearchQueriesList1.style.padding = '1rem 2rem';
+          } else {
+            console.error("Element with ID 'predictive-search-results-queries-list' not found.");
+          }
+       
+      } else {
+        console.error("tokenAndSecretId or tokenAndSecretId.suggestionSearch is not defined correctly.");
+      }
+    }).catch(error => {
+      console.error("Error resolving tokenAndSecretId promise:", error);
+    });
+  },500);
+  //Miro Cart Drawer
   cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
 
   window.addEventListener('AddItemToCart', function(event) {
@@ -42,7 +164,7 @@
 {
   "stylesheet":"search.css",
   "name": "miro AI",
-  "target": "section",
+  "target": "head",
   "settings": [
     { "type": "product", "id": "product", "label": "product", "autofill": true },
     { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }

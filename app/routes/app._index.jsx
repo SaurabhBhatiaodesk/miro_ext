@@ -27,6 +27,10 @@ export async function loader({ request }) {
                             <img src="[[IMAGE]]" alt="[[NAME]]" style="width: 50px; height: 50px;">
                             <p>[[NAME]]</p>
                         </div>`;
+    const filterhide= 'facets';
+    const sortingfilterhide='facets';
+    const recordnumberhide='yes';
+    const integration_id='';
     if(searchClass?.resultClassName=='')
     {
       await db.searchClass.updateMany({
@@ -35,7 +39,11 @@ export async function loader({ request }) {
           resultClassName: resultSearch,
           html :html,
           suggestionSearch:searchSuggestion,
-          htmlSuggestion:htmlSuggestion
+          htmlSuggestion:htmlSuggestion,
+          filterhide:filterhide,
+          sortingfilterhide:sortingfilterhide,
+          recordnumberhide:recordnumberhide,
+          integration_id:integration_id
          },
       });
     }
@@ -46,7 +54,11 @@ export async function loader({ request }) {
         resultClassName: resultSearch,
         html :html,
         suggestionSearch:searchSuggestion,
-        htmlSuggestion:htmlSuggestion
+        htmlSuggestion:htmlSuggestion,
+        filterhide:filterhide,
+        sortingfilterhide:sortingfilterhide,
+        recordnumberhide:recordnumberhide,
+        integration_id:integration_id
         },
     });
     }
@@ -65,7 +77,10 @@ export async function action({ request }) {
   const html = body.get("html");
   const suggestionSearch = body.get("suggestionSearch");
   const htmlSuggestion = body.get("htmlSuggestion");
-
+  const filterhide=body.get("filterhide");
+  const sortingfilterhide=body.get("sortfilterhide");
+  const integration_id=body.get("integration_id");
+  const recordnumberhide=body.get("recordnumberhide");
   console.log("resultSearch",resultSearch);
   console.log("html",html);
 
@@ -80,7 +95,11 @@ export async function action({ request }) {
         resultClassName: resultSearch,
         html :html,
         suggestionSearch :suggestionSearch,
-        htmlSuggestion:htmlSuggestion
+        htmlSuggestion:htmlSuggestion,
+        filterhide:filterhide,
+        sortingfilterhide:sortingfilterhide,
+        recordnumberhide:recordnumberhide,
+        integration_id:integration_id
       },
     });
   } else {
@@ -90,7 +109,11 @@ export async function action({ request }) {
         resultClassName: resultSearch,
         html :html,
         suggestionSearch :suggestionSearch,
-        htmlSuggestion:htmlSuggestion
+        htmlSuggestion:htmlSuggestion,
+        filterhide:filterhide,
+        sortingfilterhide:sortingfilterhide,
+        recordnumberhide:recordnumberhide,
+        integration_id:integration_id
       },
     });
   }
@@ -105,17 +128,33 @@ export default function Index() {
   const prevSuggestion = invoices?.suggestionSearch || "";
   const htmlprevData = invoices?.html;
   const htmlprevSuggestion = invoices?.htmlSuggestion || "";
+
+  const fh = invoices?.filterhide || "";
+  const sortingfilterhide = invoices?.sortingfilterhide;
+  const recordnumberhide = invoices?.recordnumberhide || "";
+  const integration = invoices?.integration_id || "";
+
   const [data, setdata] = useState(prevData || "");
   const [searchSuggestion, setSearchSuggestion] = useState(prevSuggestion);
   const [htmldata, sethtmldata] = useState(htmlprevData || "")
   const [htmlSuggestion, sethtmlSuggestion] = useState(htmlprevSuggestion)
+
+  const [filterhide, setFilterhide] = useState(fh);
+  const [sortinghide, setSortinghide] = useState(sortingfilterhide || "")
+  const [recordhide, setRecordhide] = useState(recordnumberhide);
+  const [integration_id, setIntegration_id] = useState(integration);
   const handleSubmit = useCallback(() => {
-    submit({ resultSearch: data,html:htmldata , suggestionSearch : searchSuggestion ,  htmlSuggestion: htmlSuggestion}, { method: "post" });
+    submit({ resultSearch: data,html:htmldata , suggestionSearch : searchSuggestion ,  htmlSuggestion: htmlSuggestion, integration_id:integration_id,filterhide:filterhide,sortfilterhide:sortinghide,recordnumberhide:recordhide}, { method: "post" });
   }, [htmldata,data,searchSuggestion ,htmlSuggestion, submit]);
   const handleDataChange = useCallback((value) => setdata(value), []);
   const handleSuggestion = useCallback((value) => setSearchSuggestion(value), []);
   const handleHtmlDataChange = useCallback((value) => sethtmldata(value), []);
   const handleHtmlSuggestion = useCallback((value) => sethtmlSuggestion(value), []);
+
+  const handleFilterhide = useCallback((value) => setFilterhide(value), []);
+  const handleSortinghide = useCallback((value) => setSortinghide(value), []);
+  const handleRecordhide = useCallback((value) => setRecordhide(value), []);
+  const handleIntegrationChange = useCallback((value) => setIntegration_id(value), []);
   return (
     <Page>
       <Layout>
@@ -123,6 +162,15 @@ export default function Index() {
           <LegacyCard title="Enter input data" sectioned>
             <Form onSubmit={handleSubmit}>
               <FormLayout>
+
+              <TextField
+                  value={integration_id}
+                  onChange={handleIntegrationChange}
+                  label="Enter Integration ID of Miro API"
+                  type="text"
+                  autoComplete="off"
+                  name="integration_id"
+                />
                 <TextField
                   value={data}
                   onChange={handleDataChange}
@@ -152,13 +200,41 @@ export default function Index() {
 
                  <TextField
                   value={htmlSuggestion}
-                  onChange={handleHtmlSuggestion}
+                  onChange={handleFilterhide}
                   label="Enter div suggestion"
                   type="text"
                   multiline={4}
                   autoComplete="off"
                   name="htmlSuggestion"
                 />
+                <TextField
+                  value={filterhide}
+                  onChange={handleHtmlSuggestion}
+                  label="Enter Filter Hide class/ID"
+                  type="text"
+                  multiline={4}
+                  autoComplete="off"
+                  name="filterhide"
+                />
+                <TextField
+                  value={sortinghide}
+                  onChange={handleSortinghide}
+                  label="Enter Sorting Filter Hide class/ID"
+                  type="text"
+                  multiline={4}
+                  autoComplete="off"
+                  name="sortingfilterhide"
+                />
+                <TextField
+                  value={recordhide}
+                  onChange={handleRecordhide}
+                  label="Enter Record Number Hide class/ID"
+                  type="text"
+                  multiline={4}
+                  autoComplete="off"
+                  name="recordnumberhide"
+                />
+                
                 <Button textAlign="center" submit>
                   Save
                 </Button>

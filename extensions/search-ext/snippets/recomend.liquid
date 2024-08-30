@@ -1,0 +1,52 @@
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Ensuring tokenAndSecretId is correctly resolved
+      const tokenAndSecretIdPromise = getAccessToken();
+      tokenAndSecretIdPromise.then(tokenAndSecretId => {
+        // Validate that tokenAndSecretId is an object and contains the suggestionSearch property
+        if (tokenAndSecretId && tokenAndSecretId.suggestionSearch) {
+       
+            console.log("entered into function");
+            console.log("tokenAndSecretId", tokenAndSecretId);
+            var predictiveSearchResults = document.getElementById(tokenAndSecretId?.suggestionSearch);
+    
+            if (predictiveSearchResults) {
+              console.log("productGridContainer valllue:", predictiveSearchResults);
+              // Assuming `productJSON` is available and contains the fetched data
+              if (productJSON && productJSON.data && productJSON.data.search && productJSON.data.search.data) {
+                console.log("productJSON.data.suggestions.data",productJSON.data.search.data)
+                const firstFiveProducts = productJSON.data.search.data.slice(0, 5).map(product => {
+                  let changeText = tokenAndSecretId?.htmlSuggestion;
+                  changeText = changeText.replace(/\[\[NAME\]\]/g, product.name);
+                  changeText = changeText.replace(/\[\[IMAGE\]\]/g, product.image);
+                  {% comment %} console.log("changeText", changeText); {% endcomment %}
+                  return `
+                    ${changeText}
+                  `;
+                }).join('');
+                console.log("firstFiveProducts", firstFiveProducts);
+                predictiveSearchResults.innerHTML = firstFiveProducts;
+              } else {
+                predictiveSearchResults.innerHTML = "No products found";
+              }
+            } else {
+              console.error("Element with ID 'predictive-search-results-products-list' not found.");
+            }
+    
+          var predictiveSearchQueriesList = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1)');
+          var predictiveSearchQueriesList1 = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(2)');
+            if (predictiveSearchQueriesList) {
+              predictiveSearchQueriesList.style.display = 'none';
+              predictiveSearchQueriesList1.style.padding = '1rem 2rem';
+            } else {
+              console.error("Element with ID 'predictive-search-results-queries-list' not found.");
+            }
+         
+        } else {
+          console.error("tokenAndSecretId or tokenAndSecretId.suggestionSearch is not defined correctly.");
+        }
+      }).catch(error => {
+        console.error("Error resolving tokenAndSecretId promise:", error);
+      });
+    });
+</script>

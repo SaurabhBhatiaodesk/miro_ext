@@ -460,27 +460,39 @@
             verticalFilter.classList.remove('filter-scroll');
         }
     }
-      let facets = `<div class="filter-top-btn" onclick="filterScroll(this)">
+    let selectedSortBy = localStorage.getItem('sortBy') && localStorage.getItem('sortBy') !== '' ? localStorage.getItem('sortBy') : 'score-asc';
+
+      let facets = `<div class="reset-top-btn" onclick="resetFilterMiro()">
+              <span class="reset-tag">Reset</span>
+              </div>
+              <div class="filter-top-btn" onclick="filterScroll(this)">
               <span class="filter-tag">Filter</span>
               </div>
+              
           <div class="vertical-filter">
             <span class="closetab" onclick="closetab(this)">x</span>
           <div class="ver-filter sort-by">
                 <div class="filter-list-type">
-                <select onchange="sortingMiro(this.value);" name="sort_by"  id="SortBy">
-                <option value="score-asc" selected="selected">
+                <select onchange="sortingMiro(this.value);" name="sort_bymiro" id="SortByMiro">
+                <option value="score-asc" ${selectedSortBy === 'score-asc' ? 'selected' : ''}>
                         Score, low to high
-                      </option><option value="score-desc">
+                      </option>
+                <option value="score-desc" ${selectedSortBy === 'score-desc' ? 'selected' : ''}>
                         Score, high to low
-                      </option><option value="price-asc">
+                      </option>
+                <option value="price-asc" ${selectedSortBy === 'price-asc' ? 'selected' : ''}>
                         Price, low to high
-                      </option><option value="price-desc">
+                      </option>
+                <option value="price-desc" ${selectedSortBy === 'price-desc' ? 'selected' : ''}>
                         Price, high to low
-                      </option><option value="discount_percentage-asc">
+                      </option>
+                <option value="discount_percentage-asc" ${selectedSortBy === 'discount_percentage-asc' ? 'selected' : ''}>
                         Discount Percentage, low to high
-                      </option><option value="discount_percentage-desc">
+                      </option>
+                <option value="discount_percentage-desc" ${selectedSortBy === 'discount_percentage-desc' ? 'selected' : ''}>
                         Discount Percentage, high to low
-                      </option></select>
+                      </option>
+                </select>
                 </div>
             </div>
 
@@ -558,26 +570,48 @@
     const currentURLplp = window.location.href;
     const urlplp = new URL(currentURLplp);
     const pagePLP = urlplp.searchParams.get('page') || 1;
+    const searchQuery = urlplp.searchParams.get('q') || '';
     const pageNext = parseInt(pagePLP)+1;
     const pagePrevious = pagePLP<=1?1:(parseInt(pagePLP)-1);
+    if('{{  request.path  }}'=='/collections/all')
+    {
+      var pageurl='/collections/all?';
+    }
+    else{
+      var pageurl='/search?q='+searchQuery+'&';
+    }
     const pagingplp=`<nav class="pagination" role="navigation" aria-label="Pagination">
       <ul class="pagination__list list-unstyled" role="list">
       <li>
-            <a href="/collections/all?page=${pagePrevious}" class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce" aria-label="Previous page"><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+            <a href="${pageurl}page=${pagePrevious}" class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce" aria-label="Previous page"><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
   <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
 </path></svg>
 
             </a>
           </li>
      <li><span class="pagination__item">…</span></li>
-      <li>
-            <a href="/collections/all?page=${pageNext}" class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce" aria-label="Next page"><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+      <li id="lastPageCheckMiro">
+            <a href="${pageurl}page=${pageNext}" class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce" aria-label="Next page"><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
   <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
 </path></svg>
 </a>
           </li></ul>
     </nav>`;
       getFacetsplp();
+
+  function resetFilterMiro()
+  {
+    localStorage.removeItem("sortBy");
+    localStorage.removeItem("selectedBrands");
+    localStorage.removeItem("selectedCategories");
+    const selectedCheckboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
+    selectedCheckboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+     document.getElementById('SortByMiro')[0].selected = true; 
+    //sortingMiro('score-asc');
+    updateFiltersplp();
+  }
   function priceMiro(type, price){
     console.log(type,price);
   }
@@ -608,6 +642,7 @@
             return { searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page,sort_by };
         }
  async function getFacetsplp() {
+  setInterval(() =>{
   if(document.getElementById("FacetFiltersForm")){
   document.getElementById("FacetFiltersForm").style.display = "none";
   }
@@ -620,6 +655,7 @@
         element.style.display = 'none';
       });
     }
+  },300);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -666,11 +702,11 @@
   facets = facets.replace(/\[\[CATEGORIES\]\]/g, fill);
   facets = facets.replace(/\[\[MINIMUM\]\]/g, result?.data?.search?.filter_facets?.price.min);
   facets = facets.replace(/\[\[MAXIMUM\]\]/g, result?.data?.search?.filter_facets?.price.max);
-  
-  document.querySelector('.product-grid').insertAdjacentHTML('beforebegin', facets);
+  if(document.querySelector('.product-grid')){
+  document.querySelector('.product-grid').insertAdjacentHTML('beforebegin', facets);}
   setTimeout(() =>{
     
-      
+    
     if(document.querySelector(".pagination__list")){
     if(document.querySelector(".pagination-wrapper"))
         {
@@ -759,7 +795,6 @@
         
 async function getBrandplp(searchQuery, brands = [], categories = [], minPrice = '', maxPrice = '',page = 1,sort_by='') {
   const sort=sort_by.split("-");
-  console.log("sort::=>",sort)
   let final_sort={};
   if(sort[0]!='' && sort[0]!='manual')
   {
@@ -812,17 +847,17 @@ if (!searchProduct.ok) {
         throw new Error(`HTTP error! Status: ${searchProduct.status}`);
       }
        productJSON = await searchProduct.json();
+       if(!productJSON.data.search.has_more)
+       {
+        document.getElementById('lastPageCheckMiro').style.display = 'none';
+      }
       if (productJSON.data.search.data.length > 0) {
         if(document.querySelector(".pagination-wrapper"))
         {
           document.querySelector(".pagination-wrapper").innerHTML = pagingplp;
         }
-      const statusElement = document.querySelector('p[role="status"]');
-      console.log("statusElementtt",statusElement)
-      if (statusElement) {
-        statusElement.style.display = 'none';
-      }
-const tokenAndSecretId = await getAccessTokenplp();
+      
+      const tokenAndSecretId = await getAccessTokenplp();
 
       const htmlContent = productJSON.data.search.data.map((value, index) => {
         let changeText = tokenAndSecretId.Html || '';
@@ -830,7 +865,7 @@ const tokenAndSecretId = await getAccessTokenplp();
           changeText = changeText.replace(/\[\[TITLE\]\]/g, value.name);
           changeText = changeText.replace(/\[\[PRICE\]\]/g, value.price.toFixed(2));
           changeText = changeText.replace(/\[\[IMAGESRC\]\]/g, value.image);
-          changeText = changeText.replace(/\[\[HANDLE\]\]/g, "https://quickstart-db2dc1d6.myshopify.com/" + value.url);
+          changeText = changeText.replace(/\[\[HANDLE\]\]/g, "https://{{ request.host }}" + value.url);
           changeText = changeText.replace(/\[\[PRODUCTID\]\]/g, value.alias);
         } else {
           console.error("tokenAndSecretId.Html is undefined");

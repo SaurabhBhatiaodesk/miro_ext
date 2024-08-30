@@ -23,10 +23,14 @@ CREATE TABLE "Session" (
 CREATE TABLE "searchClass" (
     "id" SERIAL NOT NULL,
     "shop" TEXT NOT NULL,
+    "integration_id" TEXT NOT NULL,
     "resultClassName" TEXT NOT NULL,
     "html" TEXT NOT NULL,
     "suggestionSearch" TEXT NOT NULL,
     "htmlSuggestion" TEXT NOT NULL,
+    "filterhide" TEXT NOT NULL,
+    "sortingfilterhide" TEXT NOT NULL,
+    "recordnumberhide" TEXT NOT NULL,
 
     CONSTRAINT "searchClass_pkey" PRIMARY KEY ("id")
 );

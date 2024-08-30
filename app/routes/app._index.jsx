@@ -8,6 +8,7 @@ import {
   LegacyCard,
   Layout,
   Page,
+  Select
 } from "@shopify/polaris";
 import { useEffect, useState, useCallback } from "react";
 import { useSubmit, useLoaderData } from "@remix-run/react";
@@ -27,8 +28,8 @@ export async function loader({ request }) {
                             <img src="[[IMAGE]]" alt="[[NAME]]" style="width: 50px; height: 50px;">
                             <p>[[NAME]]</p>
                         </div>`;
-    const filterhide= 'facets';
-    const sortingfilterhide='facets';
+    const filterhide= '#FacetFiltersForm,#FacetSortForm,#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1),#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(2)';
+    const paginationClass = '.pagination-wrapper';
     const recordnumberhide='yes';
     const integration_id='';
     if(searchClass?.resultClassName=='')
@@ -41,7 +42,7 @@ export async function loader({ request }) {
           suggestionSearch:searchSuggestion,
           htmlSuggestion:htmlSuggestion,
           filterhide:filterhide,
-          sortingfilterhide:sortingfilterhide,
+          paginationClass:paginationClass,
           recordnumberhide:recordnumberhide,
           integration_id:integration_id
          },
@@ -56,7 +57,7 @@ export async function loader({ request }) {
         suggestionSearch:searchSuggestion,
         htmlSuggestion:htmlSuggestion,
         filterhide:filterhide,
-        sortingfilterhide:sortingfilterhide,
+        paginationClass:paginationClass,
         recordnumberhide:recordnumberhide,
         integration_id:integration_id
         },
@@ -78,7 +79,7 @@ export async function action({ request }) {
   const suggestionSearch = body.get("suggestionSearch");
   const htmlSuggestion = body.get("htmlSuggestion");
   const filterhide=body.get("filterhide");
-  const sortingfilterhide=body.get("sortfilterhide");
+  const paginationClass=body.get("paginationClass");
   const integration_id=body.get("integration_id");
   const recordnumberhide=body.get("recordnumberhide");
   console.log("resultSearch",resultSearch);
@@ -97,7 +98,7 @@ export async function action({ request }) {
         suggestionSearch :suggestionSearch,
         htmlSuggestion:htmlSuggestion,
         filterhide:filterhide,
-        sortingfilterhide:sortingfilterhide,
+        paginationClass:paginationClass,
         recordnumberhide:recordnumberhide,
         integration_id:integration_id
       },
@@ -111,7 +112,7 @@ export async function action({ request }) {
         suggestionSearch :suggestionSearch,
         htmlSuggestion:htmlSuggestion,
         filterhide:filterhide,
-        sortingfilterhide:sortingfilterhide,
+        paginationClass:paginationClass,
         recordnumberhide:recordnumberhide,
         integration_id:integration_id
       },
@@ -130,7 +131,7 @@ export default function Index() {
   const htmlprevSuggestion = invoices?.htmlSuggestion || "";
 
   const fh = invoices?.filterhide || "";
-  const sortingfilterhide = invoices?.sortingfilterhide;
+  const paginationClass = invoices?.paginationClass;
   const recordnumberhide = invoices?.recordnumberhide || "";
   const integration = invoices?.integration_id || "";
 
@@ -140,11 +141,11 @@ export default function Index() {
   const [htmlSuggestion, sethtmlSuggestion] = useState(htmlprevSuggestion)
 
   const [filterhide, setFilterhide] = useState(fh);
-  const [sortinghide, setSortinghide] = useState(sortingfilterhide || "")
+  const [pagination, setPagination] = useState(paginationClass || "")
   const [recordhide, setRecordhide] = useState(recordnumberhide);
   const [integration_id, setIntegration_id] = useState(integration);
   const handleSubmit = useCallback(() => {
-    submit({ resultSearch: data,html:htmldata , suggestionSearch : searchSuggestion ,  htmlSuggestion: htmlSuggestion, integration_id:integration_id,filterhide:filterhide,sortfilterhide:sortinghide,recordnumberhide:recordhide}, { method: "post" });
+    submit({ resultSearch: data,html:htmldata , suggestionSearch : searchSuggestion ,  htmlSuggestion: htmlSuggestion, integration_id:integration_id,filterhide:filterhide,paginationClass:pagination,recordnumberhide:recordhide}, { method: "post" });
   }, [htmldata,data,searchSuggestion ,htmlSuggestion, submit]);
   const handleDataChange = useCallback((value) => setdata(value), []);
   const handleSuggestion = useCallback((value) => setSearchSuggestion(value), []);
@@ -152,9 +153,10 @@ export default function Index() {
   const handleHtmlSuggestion = useCallback((value) => sethtmlSuggestion(value), []);
 
   const handleFilterhide = useCallback((value) => setFilterhide(value), []);
-  const handleSortinghide = useCallback((value) => setSortinghide(value), []);
+  const handlePagination = useCallback((value) => setPagination(value), []);
   const handleRecordhide = useCallback((value) => setRecordhide(value), []);
   const handleIntegrationChange = useCallback((value) => setIntegration_id(value), []);
+  const options= [{label: 'YES', value: 'yes'},{label:'NO', value: 'no'}];
   return (
     <Page>
       <Layout>
@@ -197,44 +199,40 @@ export default function Index() {
                   autoComplete="off"
                   name="suggestionSearch"
                 />
-
-                 <TextField
+                <TextField
                   value={htmlSuggestion}
-                  onChange={handleFilterhide}
-                  label="Enter div suggestion"
+                  onChange={handleHtmlSuggestion}
+                  label="Enter suggestion HTML string"
                   type="text"
                   multiline={4}
                   autoComplete="off"
                   name="htmlSuggestion"
                 />
-                <TextField
+
+                 <TextField
                   value={filterhide}
-                  onChange={handleHtmlSuggestion}
-                  label="Enter Filter Hide class/ID"
+                  onChange={handleFilterhide}
+                  label="Enter Filter Hide Class/ID"
                   type="text"
                   multiline={4}
                   autoComplete="off"
                   name="filterhide"
                 />
                 <TextField
-                  value={sortinghide}
-                  onChange={handleSortinghide}
-                  label="Enter Sorting Filter Hide class/ID"
+                  value={pagination}
+                  onChange={handlePagination}
+                  label="Enter Pagination Class"
                   type="text"
-                  multiline={4}
                   autoComplete="off"
-                  name="sortingfilterhide"
+                  name="pagination"
                 />
-                <TextField
-                  value={recordhide}
+                <Select
+                  label='Hide no. of Records(p[role="status"])'
+                  options={options}
                   onChange={handleRecordhide}
-                  label="Enter Record Number Hide class/ID"
-                  type="text"
-                  multiline={4}
-                  autoComplete="off"
-                  name="recordnumberhide"
+                  value={recordhide}
                 />
-                
+               
                 <Button textAlign="center" submit>
                   Save
                 </Button>

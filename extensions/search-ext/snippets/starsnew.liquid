@@ -2,6 +2,8 @@
 
 
 <style>
+
+
   /* SEARCH BAR CONTAINER */
   .search-local {
     display: flex;
@@ -177,16 +179,40 @@
   .ver-filter:last-child{
     border-bottom:none;
   }
+  .ver-filter .custom-wrapper {
+    width: 100%;
+    margin-top: 1rem;
+  }
   .ver-filter .filtering-src {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #9f9f9f;
+    padding-bottom: 3px;
+    position:relative;
+  }
+  .ver-filter .filtering-src::before {
+    position: absolute;
+    content: "";
+    background: #000;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    transition: all 0.3s linear;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear;
+  }
+  .ver-filter .filtering-src:hover::before {
+    width: 100%;
   }
   .ver-filter ul.filter-list-type {
     margin: 0;
     padding: 0;
     list-style: none;
+    transition:all 0.3s linear;
+    -webkit-transition:all 0.3s linear;
+    -moz-transition:all 0.3s linear;
   }
   .vertical-filter .ver-filter span {
     font-size: 1.4rem;
@@ -197,8 +223,8 @@
     font-size: 1.3rem;
     text-transform: lowercase;
     width: 100%;
-    z-index:11;
-    padding-right:10px;
+    z-index: 11;
+    padding-right: 20px;
   }
   .vertical-filter h2.filter-heading {
     margin: 0 0 2rem;
@@ -224,11 +250,17 @@
   }
   .vertical-filter .sort-by .filter-list-type select {
     width: 100%;
-    height: 46px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0 7px;
+    height: 40px;
+    border: 1px solid #9f9f9f;
+    border-radius: 0;
+    padding: 0 12px;
     background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    font-size: 1.3rem;
+    color: #424242;
   }
   .collection-filter-btn {
     width: 100% !important;
@@ -238,9 +270,9 @@
   .ver-filter ul.filter-list-type li {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
     flex-direction: row-reverse;
-    position:relative;
+    position: relative;
   }
   .brands ul.filter-list-type li::before,.categories ul.filter-list-type li::before {
     position: absolute;
@@ -252,12 +284,15 @@
     right: 0;
     top: 3px;
   }
+  .ver-filter ul.filter-list-type li:hover::before {
+    border: 1px solid #9f9f9f;
+  }
   .brands ul.filter-list-type li:hover::after, .categories ul.filter-list-type li:hover::after {
-    background: #ccc;
+    background: #ccc !important;
     opacity:1;
   }
   .brands ul.filter-list-type li::after, .categories ul.filter-list-type li::after {
-    background: #ccc;
+    background: #ccc !imoportant;
     opacity:1;
   }
   .brands ul.filter-list-type li.show::after, .categories ul.filter-list-type li.show::after {
@@ -266,14 +301,14 @@
     background: #000;
     width: 8px;
     height: 8px;
-    top: 6px;
-    right: 3px;
+    top: 6.7px;
+    right: 2.99px;
   }
   .vertical-filter .ver-filter label::first-letter {
     text-transform: uppercase;
   }
   .vertical-filter .ver-filter .filter-tag {
-    font-weight: bold;
+    font-weight: 500;
   }
   .filter-top-btn {
     width: 100%;
@@ -281,15 +316,22 @@
     background: transparent;
     display: flex;
     align-items: center;
-    margin-bottom:10px;
+    margin-bottom: 10px;
+    gap: 10px;
   }
   .filter-top-btn span.filter-tag {
-    border: none;
     padding: 5px 12px;
-    background: #222;
-    color: #fff;
-    border-radius: 5px;
+    background: transparent;
+    color: #000;
+    border-radius: 0;
     cursor: pointer;
+    border: 1px solid #9f9f9f;
+    min-width: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.4rem;
   }
   .closetab {
     display: none;
@@ -304,6 +346,20 @@
     position: relative;
     top: -10px;
   }
+  
+  
+  
+  /*-----30-08-2024-----*/
+  
+  .vertical-filter .sort-by .filter-list-type svg {
+    position: absolute;
+    right: 26px;
+    content: "";
+    top: 14px;
+    width: 17px;
+  }
+  
+  
   /*-----Rangle Slider-Start---*/
   
   .price-input-container {
@@ -400,6 +456,36 @@
   
   
   /*----Range Slider-End-----*/
+  {% comment %} .filter-list-type {
+    display: none; /* Initially hidden */
+  }
+  
+  .ver-filter.open .filter-list-type {
+    display: block !important; /* Display when open */
+  } {% endcomment %}
+  
+  .ver-filter.brands .filter-toggle {
+    display: none;
+  }
+  button#resetpagebtn {
+    padding: 5px 12px;
+    background: transparent;
+    color: #424242;
+    border-radius: 0;
+    cursor: pointer;
+    border: 1px solid #9f9f9f;
+    min-width: 97px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    height: 39px;
+    position: absolute;
+    left: 140px;
+    top: 4px;
+    letter-spacing: 0.5px;
+  }
   
   @media screen and (max-width:991px){
      .collection ul.filter-products {
@@ -418,16 +504,20 @@
       position: fixed;
       background: #fff;
       left: -100%;
-      top: 0;
+      top: 90px;
       z-index: 11;
       padding: 2rem;
     }
     .collection .filter-scroll {
-      max-width: 280px !important;
+      max-width: 270px !important;
       left: 0 !important;
       max-height: 100%;
       overflow: auto;
-    }
+      box-shadow: 0 0 10px #c5c5c5;
+    } 
+    .vertical-filter .sort-by .filter-list-type svg {
+      top: 56px;
+    } 
     .closetab{
       display:block;
     }
@@ -438,14 +528,20 @@
   </style>
 <body>
     <script>
-      function filterScroll(obj) {
+      async function filterScroll(obj) {
         let verticalFilter = obj.nextElementSibling;
         if (verticalFilter && verticalFilter.classList.contains('vertical-filter')) {
             verticalFilter.classList.toggle('filter-scroll');
         }
     
-        // Toggle "filter-products" class on the .product-grid element
-        let productGrid = document.querySelector('.collection .product-grid');
+        if(localStorage.getItem("resultClassName")){
+          var newclass = localStorage.getItem("resultClassName");
+        }
+        else{
+          await getAccessTokenplp(); 
+          var newclass = localStorage.getItem("resultClassName");
+        }
+        let productGrid = document.querySelector(newclass);
         if (productGrid) {
             productGrid.classList.toggle('filter-products');
         }
@@ -460,46 +556,63 @@
             verticalFilter.classList.remove('filter-scroll');
         }
     }
+    function filterToggle(obj) {
+      let filterList = obj.nextElementSibling;
+      if (filterList && filterList.classList.contains('filter-list-type')) {
+          filterList.classList.toggle('filter-toggle');
+      }
+      
+      let filteringSrc = obj;
+      if (filteringSrc && filteringSrc.classList.contains('filtering-src')) {
+          filteringSrc.classList.toggle('filter-icon');
+      }
+  }
     let selectedSortBy = localStorage.getItem('sortBy') && localStorage.getItem('sortBy') !== '' ? localStorage.getItem('sortBy') : 'score-asc';
 
-      let facets = `<div class="reset-top-btn" onclick="resetFilterMiro()">
-              <span class="reset-tag">Reset</span>
-              </div>
-              <div class="filter-top-btn" onclick="filterScroll(this)">
-              <span class="filter-tag">Filter</span>
-              </div>
-              
+      let facets = `<button id="resetpagebtn" onclick="resetFilterMiro()">Clear Filters</button>
+        <div class="filter-top-btn" onclick="filterScroll(this)">    
+            <span class="filter-tag">Filter
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
+                  <defs>
+                  </defs>
+                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                    <path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"></path>
+                  </g>
+                  </svg>
+                </span>
+            </div>
+
           <div class="vertical-filter">
             <span class="closetab" onclick="closetab(this)">x</span>
           <div class="ver-filter sort-by">
+
                 <div class="filter-list-type">
-                <select onchange="sortingMiro(this.value);" name="sort_bymiro" id="SortByMiro">
-                <option value="score-asc" ${selectedSortBy === 'score-asc' ? 'selected' : ''}>
+                <select onchange="sortingMiro(this.value);" name="sort_by"  id="SortByMiro">
+                <option value="score-asc" selected="selected">
                         Score, low to high
-                      </option>
-                <option value="score-desc" ${selectedSortBy === 'score-desc' ? 'selected' : ''}>
+                      </option><option value="score-desc">
                         Score, high to low
-                      </option>
-                <option value="price-asc" ${selectedSortBy === 'price-asc' ? 'selected' : ''}>
+                      </option><option value="price-asc">
                         Price, low to high
-                      </option>
-                <option value="price-desc" ${selectedSortBy === 'price-desc' ? 'selected' : ''}>
+                      </option><option value="price-desc">
                         Price, high to low
-                      </option>
-                <option value="discount_percentage-asc" ${selectedSortBy === 'discount_percentage-asc' ? 'selected' : ''}>
+                      </option><option value="discount_percentage-asc">
                         Discount Percentage, low to high
-                      </option>
-                <option value="discount_percentage-desc" ${selectedSortBy === 'discount_percentage-desc' ? 'selected' : ''}>
+                      </option><option value="discount_percentage-desc">
                         Discount Percentage, high to low
-                      </option>
-                </select>
+                      </option></select>
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
+                        <defs>
+                        </defs>
+                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                          <path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"></path>
+                        </g>
+                      </svg>
                 </div>
             </div>
-
- 
-           <div class="ver-filter categories">
-              <div class="filtering-src">
-                <span class="filter-tag">Category</span>
+            <div class="ver-filter brands">
+              <div class="filtering-src" onclick="filterToggle(this)">
+                <span class="filter-tag">Categories</span>
                 <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
                   <defs>
                   </defs>
@@ -510,13 +623,11 @@
                 </span>
               </div>
                 <ul class="filter-list-type">
-                 [[CATEGORIES]]
+                  [[CATEGORIES]]
                 </ul>
             </div>
-
-
             <div class="ver-filter brands">
-              <div class="filtering-src">
+              <div class="filtering-src" onclick="filterToggle(this)">
                 <span class="filter-tag">Brand</span>
                 <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
                   <defs>
@@ -534,7 +645,7 @@
                      
 
             <div class="ver-filter price">
-                <div class="filtering-src">
+                <div class="filtering-src" onclick="filterToggle(this)">
                   <span class="filter-tag">Price</span>
                   <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
                     <defs>
@@ -545,6 +656,7 @@
                     </svg>
                   </span>
                 </div>
+ 
                   <div class="custom-wrapper">
     <div class="price-input-container">
         <div class="slider-container">
@@ -601,6 +713,7 @@
 
   function resetFilterMiro()
   {
+    console.log("filter Reset")
     localStorage.removeItem("sortBy");
     localStorage.removeItem("selectedBrands");
     localStorage.removeItem("selectedCategories");
@@ -642,18 +755,31 @@
             return { searchQuery, selectedBrands, selectedCategories, minPrice, maxPrice, page,sort_by };
         }
  async function getFacetsplp() {
-  setInterval(() =>{
-  if(document.getElementById("FacetFiltersForm")){
-  document.getElementById("FacetFiltersForm").style.display = "none";
-  }
-  if(document.getElementById("FacetSortForm")){
-    document.getElementById("FacetSortForm").style.display = "none";
+  setInterval(async() =>{
+    if(!localStorage.getItem("filterhide"))
+    {
+      await getAccessTokenplp();
     }
+    let filterHide = localStorage.getItem("filterhide");
+    const filterArray = filterHide.split(","); // Assuming filterHide is a string of IDs or classes separated by commas
+
+    filterArray.forEach(selector => {
+      // Trim whitespace from the selector to ensure proper matching
+      selector = selector.trim();
+      // Query all elements matching the current selector
+      const elements = document.querySelectorAll(selector);
+      // Loop through each element and hide it
+      elements.forEach(element => {
+        element.style.display = 'none';
+      });
+    });
+    if(localStorage.getItem("recordnumberhide")=="yes"){
     const statusElements = document.querySelectorAll('p[role="status"]');
     if (statusElements.length > 0) {
       statusElements.forEach(element => {
         element.style.display = 'none';
       });
+    }
     }
   },300);
     const myHeaders = new Headers();
@@ -702,8 +828,15 @@
   facets = facets.replace(/\[\[CATEGORIES\]\]/g, fill);
   facets = facets.replace(/\[\[MINIMUM\]\]/g, result?.data?.search?.filter_facets?.price.min);
   facets = facets.replace(/\[\[MAXIMUM\]\]/g, result?.data?.search?.filter_facets?.price.max);
-  if(document.querySelector('.product-grid')){
-  document.querySelector('.product-grid').insertAdjacentHTML('beforebegin', facets);}
+  if(localStorage.getItem("resultClassName")){
+    var newclass = localStorage.getItem("resultClassName");
+  }
+  else{
+    await getAccessTokenplp(); 
+    var newclass = localStorage.getItem("resultClassName");
+  }
+  if(document.querySelector(newclass)){
+  document.querySelector(newclass).insertAdjacentHTML('beforebegin', facets);}
   setTimeout(() =>{
     
     
@@ -852,15 +985,16 @@ if (!searchProduct.ok) {
         document.getElementById('lastPageCheckMiro').style.display = 'none';
       }
       if (productJSON.data.search.data.length > 0) {
-        if(document.querySelector(".pagination-wrapper"))
+        const pageinationClass = localStorage.getItem("paginationClass") || "";
+        if(document.querySelector(pageinationClass))
         {
-          document.querySelector(".pagination-wrapper").innerHTML = pagingplp;
+          document.querySelector(pageinationClass).innerHTML = pagingplp;
         }
       
       const tokenAndSecretId = await getAccessTokenplp();
 
       const htmlContent = productJSON.data.search.data.map((value, index) => {
-        let changeText = tokenAndSecretId.Html || '';
+        let changeText = tokenAndSecretId.html || '';
         if (changeText) {
           changeText = changeText.replace(/\[\[TITLE\]\]/g, value.name);
           changeText = changeText.replace(/\[\[PRICE\]\]/g, value.price.toFixed(2));
@@ -889,8 +1023,14 @@ async function getAccessTokenplp() {
   if (response.ok) {
     const data = await response.json();
     console.log("resultClassNameresultClassName",data)
-    localStorage.setItem("resultClassName", data.resultClassName)
-    localStorage.setItem("suggestionSearch", data.suggestionSearch)
+      localStorage.setItem("integration_id", data.integration_id)
+      localStorage.setItem("html", data.html)
+      localStorage.setItem("htmlSuggestion", data.htmlSuggestion)
+      localStorage.setItem("filterhide", data.filterhide)
+      localStorage.setItem("paginationClass", data.paginationClass)
+      localStorage.setItem("recordnumberhide", data.recordnumberhide)
+      localStorage.setItem("resultClassName", data.resultClassName)
+      localStorage.setItem("suggestionSearch", data.suggestionSearch)
     return data;
   }
   else {

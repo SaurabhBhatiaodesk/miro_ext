@@ -14,6 +14,12 @@
     if (response.ok) {
       const data = await response.json();
       console.log("resultClassNameresultClassName",data)
+      localStorage.setItem("integration_id", data.integration_id)
+      localStorage.setItem("html", data.html)
+      localStorage.setItem("htmlSuggestion", data.htmlSuggestion)
+      localStorage.setItem("filterhide", data.filterhide)
+      localStorage.setItem("paginationClass", data.paginationClass)
+      localStorage.setItem("recordnumberhide", data.recordnumberhide)
       localStorage.setItem("resultClassName", data.resultClassName)
       localStorage.setItem("suggestionSearch", data.suggestionSearch)
       return data;
@@ -78,6 +84,25 @@
             },100);
   setInterval(async() =>{
 
+    if (!currentURLMiro.includes("search") || !currentURLMiro.includes("collections")) {  
+      let filterHide = localStorage.getItem("filterhide");
+      const filterArray = filterHide.split(","); // Assuming filterHide is a string of IDs or classes separated by commas
+
+      filterArray.forEach(selector => {
+        // Trim whitespace from the selector to ensure proper matching
+        selector = selector.trim();
+        // Query all elements matching the current selector
+        const elements = document.querySelectorAll(selector);
+        // Loop through each element and hide it
+        elements.forEach(element => {
+          element.style.display = 'none';
+        });
+      });
+      
+       
+        
+    }
+    
     
     console.log("DOMContentLoaded recomendation access token and secret",tokenAndSecretIdPromise);
     tokenAndSecretIdPromise.then(tokenAndSecretId => {

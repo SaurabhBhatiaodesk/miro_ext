@@ -29,7 +29,7 @@ CREATE TABLE "searchClass" (
     "suggestionSearch" TEXT NOT NULL,
     "htmlSuggestion" TEXT NOT NULL,
     "filterhide" TEXT NOT NULL,
-    "sortingfilterhide" TEXT NOT NULL,
+    "paginationClass" TEXT NOT NULL,
     "recordnumberhide" TEXT NOT NULL,
 
     CONSTRAINT "searchClass_pkey" PRIMARY KEY ("id")

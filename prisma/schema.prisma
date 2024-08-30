@@ -41,7 +41,7 @@ model searchClass {
   htmlSuggestion   String
 
   filterhide String
-  sortingfilterhide        String
+  paginationClass   String
   recordnumberhide  String
 
 }

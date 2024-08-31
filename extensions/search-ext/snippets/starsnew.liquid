@@ -210,10 +210,13 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    transition:all 0.3s linear;
-    -webkit-transition:all 0.3s linear;
-    -moz-transition:all 0.3s linear;
-  }
+    max-height: 500px; /* Set a specific max-height that fits your content */
+    transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+    -webkit-transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+    -moz-transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+    opacity: 1;
+    overflow: hidden;
+}
   .vertical-filter .ver-filter span {
     font-size: 1.4rem;
     color: #424242;
@@ -329,10 +332,12 @@
     min-width: 100px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     font-size: 1.4rem;
-  }
+    height: 40px;
+    margin-top: 2px;
+}
   .closetab {
     display: none;
     background: #000;
@@ -464,9 +469,13 @@
     display: block !important; /* Display when open */
   } {% endcomment %}
   
-  .ver-filter.brands .filter-toggle {
-    display: none;
-  }
+
+/* Apply the animation to the filter-toggle */
+.ver-filter .filter-list-type.filter-toggle {
+  opacity: 0;
+  max-height: 0; /* Smoothly transition to zero height */
+}
+  
   button#resetpagebtn {
     padding: 5px 12px;
     background: transparent;
@@ -480,13 +489,25 @@
     justify-content: space-between;
     align-items: center;
     font-size: 1.2rem;
-    height: 39px;
+    height: 40px;
     position: absolute;
     left: 140px;
     top: 4px;
     letter-spacing: 0.5px;
   }
-  
+  .ver-filter .filter-icon svg, .selected-box svg {
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+  } 
+  .filter-top-btn svg.svg-icon {
+    margin-right: 5px;
+  }
+  select#SortByMiro{
+    padding:5px 10px;
+  }
+
+
   @media screen and (max-width:991px){
      .collection ul.filter-products {
         max-width: 70% !important;
@@ -567,26 +588,25 @@
           filteringSrc.classList.toggle('filter-icon');
       }
   }
+
+  function selectType(obj) {
+    obj.classList.toggle("selected-box");
+  }
     let selectedSortBy = localStorage.getItem('sortBy') && localStorage.getItem('sortBy') !== '' ? localStorage.getItem('sortBy') : 'score-asc';
 
       let facets = `<button id="resetpagebtn" onclick="resetFilterMiro()">Clear Filters</button>
         <div class="filter-top-btn" onclick="filterScroll(this)">    
-            <span class="filter-tag">Filter
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
-                  <defs>
-                  </defs>
-                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                    <path d="M 90 23.25 c 0 -0.384 -0.146 -0.768 -0.439 -1.061 c -0.586 -0.586 -1.535 -0.586 -2.121 0 L 45 64.629 L 2.561 22.189 c -0.585 -0.586 -1.536 -0.586 -2.121 0 c -0.586 0.586 -0.586 1.535 0 2.121 l 43.5 43.5 c 0.585 0.586 1.536 0.586 2.121 0 l 43.5 -43.5 C 89.854 24.018 90 23.634 90 23.25 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(29,29,27); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"></path>
-                  </g>
-                  </svg>
-                </span>
+            <span class="filter-tag">
+               <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M768 785.066667a17.015467 17.015467 0 0 1-12.066133-5.000534l-256-256a17.0496 17.0496 0 0 1 0-24.132266l256-256a17.0496 17.0496 0 1 1 24.132266 24.132266L536.132267 512l243.933866 243.933867A17.0496 17.0496 0 0 1 768 785.066667z m-256 0a17.015467 17.015467 0 0 1-12.066133-5.000534l-256-256a17.0496 17.0496 0 0 1 0-24.132266l256-256a17.0496 17.0496 0 1 1 24.132266 24.132266L280.132267 512l243.933866 243.933867A17.0496 17.0496 0 0 1 512 785.066667z"/></svg>
+               Filter 
+               </span>
             </div>
 
           <div class="vertical-filter">
             <span class="closetab" onclick="closetab(this)">x</span>
           <div class="ver-filter sort-by">
 
-                <div class="filter-list-type">
+                <div class="filter-list-type" onclick="selectType(this)">
                 <select onchange="sortingMiro(this.value);" name="sort_by"  id="SortByMiro">
                 <option value="score-asc" selected="selected">
                         Score, low to high
@@ -644,7 +664,7 @@
             </div>
                      
 
-            <div class="ver-filter price">
+            <div class="ver-filter brands price">
                 <div class="filtering-src" onclick="filterToggle(this)">
                   <span class="filter-tag">Price</span>
                   <span class="caret"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="10" height="10" viewBox="0 0 256 256" xml:space="preserve">
@@ -657,7 +677,7 @@
                   </span>
                 </div>
  
-                  <div class="custom-wrapper">
+                  <div class="custom-wrapper filter-list-type">
     <div class="price-input-container">
         <div class="slider-container">
             <div class="price-slider"></div>
@@ -782,12 +802,16 @@
     }
     }
   },300);
+  if(!localStorage.getItem("integration_id"))
+    {
+      await getAccessTokenplp();
+    }
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const graphql = JSON.stringify({
       query: "query Search($integration_id: String!, $filter_query: JSONObject) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query }) {\n        filter_facets\n    }\n}\n",
-      variables: {"integration_id":"ba5e511a-4052-44fc-88b7-01f1cfee9a77","filter_query":{} }
+      variables: {"integration_id":localStorage.getItem("integration_id"),"filter_query":{} }
     })
     const requestOptions = {
       method: "POST",
@@ -955,9 +979,9 @@ const resultClassName = localStorage.getItem("resultClassName")
 let raw;
 
 raw = JSON.stringify({
-  query: "query Search($integration_id: String!, $filter_query: JSONObject,$limit: Int, $skip: Int,$sort:SortOption) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query,limit:$limit,skip:$skip,sort:$sort }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+  query: "query Search($integration_id: String!,$text_query: String!, $filter_query: JSONObject,$limit: Int, $skip: Int,$sort:SortOption) {\n    search(query: { integration_id: $integration_id,text_query: $text_query, filter_query: $filter_query,limit:$limit,skip:$skip,sort:$sort }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
   variables: {
-                    integration_id: "ba5e511a-4052-44fc-88b7-01f1cfee9a77",
+                    integration_id: localStorage.getItem("integration_id"),
                     text_query: searchQuery,
                     filter_query: filterQuery,
                     limit: limit,

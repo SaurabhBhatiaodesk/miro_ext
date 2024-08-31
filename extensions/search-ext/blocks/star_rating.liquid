@@ -29,25 +29,14 @@
     }
   }
   const currentURLMiro = window.location.href;
-  async function getProductJson(){
+  async function getProductJson(searchQuery){
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json")
     const resultClassName = localStorage.getItem("resultClassName")
     let raw;
-    let searchQuery = 'a';
-    if(document.getElementById('Search-In-Modal'))
-    {
-      searchQuery = document.getElementById('Search-In-Modal').value;
-    }
-    else
-    {
-     
-      const urlplp = new URL(currentURLMiro);
-       searchQuery = urlplp.searchParams.get('q') || '';
-    }
     
     raw = JSON.stringify({
-      query: "query Search($integration_id: String!, $filter_query: JSONObject,$limit: Int) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query,limit:$limit }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+      query: "query Search($integration_id: String!, $text_query: String!, $limit: Int) {\n    search(query: { integration_id: $integration_id,text_query: $text_query,limit:$limit }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
       variables: {
                         integration_id: "ba5e511a-4052-44fc-88b7-01f1cfee9a77",
                         text_query: searchQuery,
@@ -76,81 +65,86 @@
           else{}
             const tokenAndSecretIdPromise = getAccessTokenplp();
 
-            setTimeout(async() =>{
-              if (!currentURLMiro.includes("search") || !currentURLMiro.includes("collections")) {  
-                let productJSON = await getProductJson();
+                document.addEventListener('DOMContentLoaded', function () {
+                  // Check if the element exists
+                  const searchInput = document.getElementById('Search-In-Modal');
+                  if (searchInput) {
+                      // Attach the 'keydown' event listener to the input
+                      searchInput.addEventListener('keydown',async function (event) {
+                        setTimeout(async() => {
+                        let filterHide = localStorage.getItem("filterhide");
+                          const filterArray = filterHide.split(","); // Assuming filterHide is a string of IDs or classes separated by commas
+
+                          filterArray.forEach(selector => {
+                            // Trim whitespace from the selector to ensure proper matching
+                            selector = selector.trim();
+                            // Query all elements matching the current selector
+                            const elements = document.querySelectorAll(selector);
+                            // Loop through each element and hide it
+                            elements.forEach(element => {
+                              element.style.display = 'none';
+                            });
+                          });
+                          const searchQuery = event.target.value;
+                          let productJSON = await getProductJson(searchQuery);
+                          console.log(searchQuery); // Do something with the searchQuery, like logging it or using it for a search
+                          console.log("DOMContentLoaded recomendation access token and secret",tokenAndSecretIdPromise);
+                          tokenAndSecretIdPromise.then(tokenAndSecretId => {
+                            console.log("DOMContentLoaded recomendation under then");
+                            // Validate that tokenAndSecretId is an object and contains the suggestionSearch property
+                            if (tokenAndSecretId && tokenAndSecretId.suggestionSearch) {
+                              console.log("get suggestion")
+                                console.log("entered into function");
+                                console.log("tokenAndSecretId", tokenAndSecretId);
+                        
+                                if (document.getElementById(tokenAndSecretId?.suggestionSearch)) {
+                                  // Assuming `productJSON` is available and contains the fetched data
+                                  if (productJSON && productJSON.data && productJSON.data.search && productJSON.data.search.data) {
+                                    console.log("productJSON.data.suggestions.data",productJSON.data.search.data)
+                                    const firstFiveProducts = productJSON.data.search.data.slice(0, 5).map(product => {
+                                      let changeText = tokenAndSecretId?.htmlSuggestion;
+                                      changeText = changeText.replace(/\[\[NAME\]\]/g, product.name);
+                                      changeText = changeText.replace(/\[\[IMAGE\]\]/g, product.image);
+                                      {% comment %} console.log("changeText", changeText); {% endcomment %}
+                                      return `
+                                        ${changeText}
+                                      `;
+                                    }).join('');
+                                    console.log("firstFiveProducts", firstFiveProducts);
+                                    document.getElementById(tokenAndSecretId?.suggestionSearch).innerHTML = firstFiveProducts;
+                                  } else {
+                                    document.getElementById(tokenAndSecretId?.suggestionSearch).innerHTML = "No products found";
+                                  }
+                                } else {
+                                  console.error("Element with ID 'predictive-search-results-products-list' not found.");
+                                }
+                        
+                              var predictiveSearchQueriesList = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1)');
+                              var predictiveSearchQueriesList1 = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(2)');
+                                if (predictiveSearchQueriesList) {
+                                  predictiveSearchQueriesList.style.display = 'none';
+                                  predictiveSearchQueriesList1.style.padding = '1rem 2rem';
+                                } else {
+                                  console.error("Element with ID 'predictive-search-results-queries-list' not found.");
+                                }
+                            
+                            } else {
+                              console.error("tokenAndSecretId or tokenAndSecretId.suggestionSearch is not defined correctly.");
+                            }
+                          }).catch(error => {
+                            console.error("Error resolving tokenAndSecretId promise:", error);
+                          });
+                        },1000);
+                        });
+                        
+                  }
+              });
+                
                   
-                }
-            },100);
-  setInterval(async() =>{
 
-    if (!currentURLMiro.includes("search") || !currentURLMiro.includes("collections")) {  
-      let filterHide = localStorage.getItem("filterhide");
-      const filterArray = filterHide.split(","); // Assuming filterHide is a string of IDs or classes separated by commas
-
-      filterArray.forEach(selector => {
-        // Trim whitespace from the selector to ensure proper matching
-        selector = selector.trim();
-        // Query all elements matching the current selector
-        const elements = document.querySelectorAll(selector);
-        // Loop through each element and hide it
-        elements.forEach(element => {
-          element.style.display = 'none';
-        });
-      });
-      
-       
-        
-    }
     
     
-    console.log("DOMContentLoaded recomendation access token and secret",tokenAndSecretIdPromise);
-    tokenAndSecretIdPromise.then(tokenAndSecretId => {
-      console.log("DOMContentLoaded recomendation under then");
-      // Validate that tokenAndSecretId is an object and contains the suggestionSearch property
-      if (tokenAndSecretId && tokenAndSecretId.suggestionSearch) {
-        console.log("get suggestion")
-          console.log("entered into function");
-          console.log("tokenAndSecretId", tokenAndSecretId);
   
-          if (document.getElementById(tokenAndSecretId?.suggestionSearch)) {
-            // Assuming `productJSON` is available and contains the fetched data
-            if (productJSON && productJSON.data && productJSON.data.search && productJSON.data.search.data) {
-              console.log("productJSON.data.suggestions.data",productJSON.data.search.data)
-              const firstFiveProducts = productJSON.data.search.data.slice(0, 5).map(product => {
-                let changeText = tokenAndSecretId?.htmlSuggestion;
-                changeText = changeText.replace(/\[\[NAME\]\]/g, product.name);
-                changeText = changeText.replace(/\[\[IMAGE\]\]/g, product.image);
-                {% comment %} console.log("changeText", changeText); {% endcomment %}
-                return `
-                  ${changeText}
-                `;
-              }).join('');
-              console.log("firstFiveProducts", firstFiveProducts);
-              document.getElementById(tokenAndSecretId?.suggestionSearch).innerHTML = firstFiveProducts;
-            } else {
-              document.getElementById(tokenAndSecretId?.suggestionSearch).innerHTML = "No products found";
-            }
-          } else {
-            console.error("Element with ID 'predictive-search-results-products-list' not found.");
-          }
-  
-        var predictiveSearchQueriesList = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1)');
-        var predictiveSearchQueriesList1 = document.querySelector('#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(2)');
-          if (predictiveSearchQueriesList) {
-            predictiveSearchQueriesList.style.display = 'none';
-            predictiveSearchQueriesList1.style.padding = '1rem 2rem';
-          } else {
-            console.error("Element with ID 'predictive-search-results-queries-list' not found.");
-          }
-       
-      } else {
-        console.error("tokenAndSecretId or tokenAndSecretId.suggestionSearch is not defined correctly.");
-      }
-    }).catch(error => {
-      console.error("Error resolving tokenAndSecretId promise:", error);
-    });
-  },500);
   //Miro Cart Drawer
   cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
 
@@ -182,8 +176,9 @@
       console.error('Error adding item to cart:', error);
     });
   });
+  var integrationID = localStorage.getItem("integration_id");
   </script>
-  <script type="module" src="https://content.miros.services/frontend/public/main/container/assets/container.bundle.js" data-miros-integration-id="ba5e511a-4052-44fc-88b7-01f1cfee9a77"></script>
+  <script type="module" src="https://content.miros.services/frontend/public/main/container/assets/container.bundle.js" data-miros-integration-id=""+integrationID ></script>
 
 {% schema %}
 {

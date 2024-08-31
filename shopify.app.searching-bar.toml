@@ -3,11 +3,11 @@
 client_id = "f1e5c28469bdf4e1ab3836f5a80b4d62"
 name = "Miro Extension"
 handle = "miro_extension"
-application_url = "https://strike-step-unless-characters.trycloudflare.com"
+application_url = "https://miros-shopify-app-abffbc907e41.herokuapp.com/"
 embedded = true
 
 [build]
-automatically_update_urls_on_dev = true
+automatically_update_urls_on_dev = false
 dev_store_url = "quickstart-db2dc1d6.myshopify.com"
 include_config_on_deploy = true
 
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://strike-step-unless-characters.trycloudflare.com/auth/callback",
-  "https://strike-step-unless-characters.trycloudflare.com/auth/shopify/callback",
-  "https://strike-step-unless-characters.trycloudflare.com/api/auth/callback"
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/callback",
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/shopify/callback",
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/api/auth/callback"
 ]
 
 [webhooks]

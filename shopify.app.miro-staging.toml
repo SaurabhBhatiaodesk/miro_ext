@@ -3,13 +3,12 @@
 client_id = "a22a92b6335e92da0a9ef97f5a497ca2"
 name = "Miro Staging"
 handle = "miro-staging"
-application_url = "https://dave-totals-dvd-imperial.trycloudflare.com"
+application_url = "https://invited-revenues-ba-bother.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "quickstart-db2dc1d6.myshopify.com"
-include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -17,9 +16,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://dave-totals-dvd-imperial.trycloudflare.com/auth/callback",
-  "https://dave-totals-dvd-imperial.trycloudflare.com/auth/shopify/callback",
-  "https://dave-totals-dvd-imperial.trycloudflare.com/api/auth/callback"
+  "https://invited-revenues-ba-bother.trycloudflare.com/auth/callback",
+  "https://invited-revenues-ba-bother.trycloudflare.com/auth/shopify/callback",
+  "https://invited-revenues-ba-bother.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

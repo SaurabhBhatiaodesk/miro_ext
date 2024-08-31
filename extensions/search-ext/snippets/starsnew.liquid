@@ -525,7 +525,7 @@
       position: fixed;
       background: #fff;
       left: -100%;
-      top: 90px;
+      top: 0px;
       z-index: 11;
       padding: 2rem;
     }
@@ -730,6 +730,13 @@
           </li></ul>
     </nav>`;
       getFacetsplp();
+
+      setInterval(()=>{
+        if(!document.getElementById('SortByMiro'))
+        {
+          getFacetsplp();
+        }
+      },2000)
 
   function resetFilterMiro()
   {

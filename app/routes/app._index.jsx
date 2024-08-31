@@ -30,7 +30,7 @@ export async function loader({ request }) {
                             <img src="[[IMAGE]]" alt="[[NAME]]" style="width: 50px; height: 50px;">
                             <p>[[NAME]]</p>
                         </div>`;
-    const filterhide= '#FacetFiltersForm,#FacetSortForm,#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1)';
+    const filterhide= '#FacetFiltersForm,#FacetSortForm,#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1),.facets-container';
     const paginationClass = '.pagination-wrapper';
     const recordnumberhide='yes';
     const integration_id='';

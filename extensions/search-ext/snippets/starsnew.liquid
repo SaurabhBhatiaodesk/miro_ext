@@ -977,7 +977,7 @@ async function getBrandplp(searchQuery, brands = [], categories = [], minPrice =
 myHeaders.append("Content-Type", "application/json")
 const resultClassName = localStorage.getItem("resultClassName")
 let raw;
-
+if(searchQuery!=""){
 raw = JSON.stringify({
   query: "query Search($integration_id: String!,$text_query: String!, $filter_query: JSONObject,$limit: Int, $skip: Int,$sort:SortOption) {\n    search(query: { integration_id: $integration_id,text_query: $text_query, filter_query: $filter_query,limit:$limit,skip:$skip,sort:$sort }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
   variables: {
@@ -989,6 +989,19 @@ raw = JSON.stringify({
                     sort:final_sort
                 }
 })
+}
+else{
+  raw = JSON.stringify({
+    query: "query Search($integration_id: String!, $filter_query: JSONObject,$limit: Int, $skip: Int,$sort:SortOption) {\n    search(query: { integration_id: $integration_id, filter_query: $filter_query,limit:$limit,skip:$skip,sort:$sort }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
+    variables: {
+                      integration_id: localStorage.getItem("integration_id"),
+                      filter_query: filterQuery,
+                      limit: limit,
+                      skip: skip,
+                      sort:final_sort
+                  }
+  })
+}
 console.log("raw:::",raw);
     const requestOptions = {
       method: 'POST',

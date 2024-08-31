@@ -3,7 +3,7 @@
 client_id = "a22a92b6335e92da0a9ef97f5a497ca2"
 name = "Miro Staging"
 handle = "miro-staging"
-application_url = "https://big-bones-cup-gentle.trycloudflare.com"
+application_url = "https://media-pattern-beneath-occurring.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://big-bones-cup-gentle.trycloudflare.com/auth/callback",
-  "https://big-bones-cup-gentle.trycloudflare.com/auth/shopify/callback",
-  "https://big-bones-cup-gentle.trycloudflare.com/api/auth/callback"
+  "https://media-pattern-beneath-occurring.trycloudflare.com/auth/callback",
+  "https://media-pattern-beneath-occurring.trycloudflare.com/auth/shopify/callback",
+  "https://media-pattern-beneath-occurring.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

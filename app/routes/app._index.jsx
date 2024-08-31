@@ -12,6 +12,8 @@ import {
 } from "@shopify/polaris";
 import { useEffect, useState, useCallback } from "react";
 import { useSubmit, useLoaderData } from "@remix-run/react";
+import NotificationBar from "../components/NotificationBar";
+
 export async function loader({ request }) {
   const admin = await authenticate.admin(request);
   const shop = admin.session.shop;
@@ -28,7 +30,7 @@ export async function loader({ request }) {
                             <img src="[[IMAGE]]" alt="[[NAME]]" style="width: 50px; height: 50px;">
                             <p>[[NAME]]</p>
                         </div>`;
-    const filterhide= '#FacetFiltersForm,#FacetSortForm,#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1),#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(2)';
+    const filterhide= '#FacetFiltersForm,#FacetSortForm,#predictive-search-results-groups-wrapper .predictive-search__result-group:nth-child(1)';
     const paginationClass = '.pagination-wrapper';
     const recordnumberhide='yes';
     const integration_id='';
@@ -123,6 +125,7 @@ export async function action({ request }) {
 }
 
 export default function Index() {
+  const [notificationMessage, setNotificationMessage] = useState("");
   const submit = useSubmit();
   const invoices = useLoaderData();
   const prevData = invoices?.resultClassName;
@@ -146,7 +149,15 @@ export default function Index() {
   const [integration_id, setIntegration_id] = useState(integration);
   const handleSubmit = useCallback(() => {
     submit({ resultSearch: data,html:htmldata , suggestionSearch : searchSuggestion ,  htmlSuggestion: htmlSuggestion, integration_id:integration_id,filterhide:filterhide,paginationClass:pagination,recordnumberhide:recordhide}, { method: "post" });
-  }, [htmldata,data,searchSuggestion ,htmlSuggestion, submit]);
+    setNotificationMessage("Thanks for submitting Details");
+    setTimeout(() =>{
+    setNotificationMessage("");
+  },5000);
+  const headerElement = document.getElementById('myHeader');
+    if (headerElement) {
+      headerElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [htmldata,data,searchSuggestion ,htmlSuggestion,integration_id,filterhide,pagination,recordhide, submit]);
   const handleDataChange = useCallback((value) => setdata(value), []);
   const handleSuggestion = useCallback((value) => setSearchSuggestion(value), []);
   const handleHtmlDataChange = useCallback((value) => sethtmldata(value), []);
@@ -157,11 +168,27 @@ export default function Index() {
   const handleRecordhide = useCallback((value) => setRecordhide(value), []);
   const handleIntegrationChange = useCallback((value) => setIntegration_id(value), []);
   const options= [{label: 'YES', value: 'yes'},{label:'NO', value: 'no'}];
+  const successStyle = {
+    background: "#b4fed2",
+    padding: "12px",
+    borderRadius: "8px",
+    marginBottom: "1rem",
+    width: "100%",
+    marginTop: "1rem",
+    color: "#0c5132"
+  };
   return (
+    
     <Page>
+        <div id="myHeader"></div>
+        {notificationMessage !== "" && (
+            <NotificationBar title={notificationMessage} style={successStyle} />
+          )}
       <Layout>
+      
         <Layout.Section>
           <LegacyCard title="Enter input data" sectioned>
+          
             <Form onSubmit={handleSubmit}>
               <FormLayout>
 

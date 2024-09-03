@@ -3,7 +3,7 @@
 client_id = "a22a92b6335e92da0a9ef97f5a497ca2"
 name = "Miro Staging"
 handle = "miro-staging"
-application_url = "https://invited-revenues-ba-bother.trycloudflare.com"
+application_url = "https://costume-approve-yards-baking.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://invited-revenues-ba-bother.trycloudflare.com/auth/callback",
-  "https://invited-revenues-ba-bother.trycloudflare.com/auth/shopify/callback",
-  "https://invited-revenues-ba-bother.trycloudflare.com/api/auth/callback"
+  "https://costume-approve-yards-baking.trycloudflare.com/auth/callback",
+  "https://costume-approve-yards-baking.trycloudflare.com/auth/shopify/callback",
+  "https://costume-approve-yards-baking.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -475,7 +475,20 @@
   opacity: 0;
   max-height: 0; /* Smoothly transition to zero height */
 }
-  
+
+button#miroPriceApply {
+  background: transparent;
+  color: #424242;
+  border-radius: 0;
+  cursor: pointer;
+  border: 1px solid #9f9f9f;
+  min-width: 127px;
+  font-size: 1.2rem;
+  height: 20px;
+  letter-spacing: 0.5px;
+  position: absolute;
+  margin-top: 61px;
+}
   button#resetpagebtn {
     padding: 5px 12px;
     background: transparent;
@@ -683,17 +696,18 @@
             <div class="price-slider"></div>
         </div>
         <div class="range-input">
-            <input type="range" class="min-range" min="0" max="10000" value="0" step="1">
-            <input type="range" class="max-range" min="0" max="10000" value="8500" step="1">
+            <input type="range" class="min-range" min="[[MINIMUM]]" max="[[MAXIMUM]]" value="[[MINIMUM]]" step="1">
+            <input type="range" class="max-range" min="[[MINIMUM]]" max="[[MAXIMUM]]" value="[[MAXIMUM]]" step="1">
         </div>
         <div class="price-input">
             <div class="price-field">
-                <span>$</span> <input type="number" class="min-input" value="0">
+                <span>$</span> <input type="number" class="min-input" value="[[MINIMUM]]">
             </div>
             <strong>_</strong>
             <div class="price-field">
-                <span>$</span> <input type="number" class="max-input" value="8500">
+                <span>$</span> <input type="number" class="max-input" value="[[MAXIMUM]]">
             </div>
+            <button style="display:none;" id="miroPriceApply" onclick="javascript:updateFiltersplp();this.style.display='none';" class="primary">Apply Price Filter</button>
         </div>
     </div>
 </div>
@@ -880,41 +894,38 @@
     }
     updateFiltersplp();
     console.log("under price slider-wrapper");    
+    if(document.querySelector('.min-range')){
     document.querySelector('.min-range').addEventListener('input', function(e) {
       let minValue = e.target.value;
       console.log('Min range input triggered:', minValue);
       document.querySelector('.min-input').value = minValue;
-      setTimeout(function() {
-        updateFiltersplp();
-      },1000);
+      document.getElementById('miroPriceApply').style.display = "block";
     });
-
+    }
+    if(document.querySelector('.min-input')){
     document.querySelector('.min-input').addEventListener('input', function(e) {
       let minValue = e.target.value;
       console.log('Min input field triggered:', minValue);
       document.querySelector('.min-range').value = minValue;
-      setTimeout(function() {
-        updateFiltersplp();
-      },1000);
+      document.getElementById('miroPriceApply').style.display = "block";
     });
+    }
+    if(document.querySelector('.max-range')){
     document.querySelector('.max-range').addEventListener('input', function(e) {
       let maxValue = e.target.value;
       console.log('Max range input triggered:', maxValue);
       document.querySelector('.max-input').value = maxValue;
-      setTimeout(function() {
-        updateFiltersplp();
-      },1000);
+      document.getElementById('miroPriceApply').style.display = "block";
     });
-
+    }
+    if(document.querySelector('.max-input')){
     document.querySelector('.max-input').addEventListener('input', function(e) {
       let maxValue = e.target.value;
       console.log('Max input field triggered:', maxValue);
       document.querySelector('.max-range').value = maxValue;
-      setTimeout(function() {
-        updateFiltersplp();
-      },1000);
+      document.getElementById('miroPriceApply').style.display = "block";
     });
-
+  }
   },1000);
 }
  async function getSelectedValuesplp() {
@@ -984,7 +995,7 @@ async function getBrandplp(searchQuery, brands = [], categories = [], minPrice =
 myHeaders.append("Content-Type", "application/json")
 const resultClassName = localStorage.getItem("resultClassName")
 let raw;
-if(searchQuery!=""){
+if(searchQuery!="" && '{{request.path}}' == '/search'){
 raw = JSON.stringify({
   query: "query Search($integration_id: String!,$text_query: String!, $filter_query: JSONObject,$limit: Int, $skip: Int,$sort:SortOption) {\n    search(query: { integration_id: $integration_id,text_query: $text_query, filter_query: $filter_query,limit:$limit,skip:$skip,sort:$sort }) {\n        filter_facets\n        has_more\n        skip\n        limit\n      data {\n            id\n            alias\n            name\n            url\n   image\n  price\n    }\n    }\n}\n",
   variables: {
@@ -1024,7 +1035,7 @@ if (!searchProduct.ok) {
         throw new Error(`HTTP error! Status: ${searchProduct.status}`);
       }
        productJSON = await searchProduct.json();
-       if(!productJSON.data.search.has_more)
+       if(!productJSON.data.search.has_more && document.getElementById('lastPageCheckMiro'))
        {
         document.getElementById('lastPageCheckMiro').style.display = 'none';
       }
@@ -1050,9 +1061,30 @@ if (!searchProduct.ok) {
         }
         return `${changeText}`;
       }).join('');
-
-      document.querySelector(resultClassName).innerHTML = htmlContent || '';
-      document.querySelector(resultClassName).style.visibility = "visible";
+        if(document.querySelector(resultClassName)){
+          document.querySelector(resultClassName).innerHTML = htmlContent || '';
+        }
+        else{
+             // Create a new div element
+          const newDiv = document.createElement('div');
+          newDiv.classList.add('collection');
+          newDiv.classList.add('page-width');
+          // Create a new ul element
+          const newUl = document.createElement('ul');
+          newUl.classList.add('grid');
+          newUl.classList.add('product-grid');
+          newUl.classList.add('grid--2-col-tablet-down');
+          newUl.classList.add('grid--4-col-desktop');
+                
+          // Append the new ul to the new div
+          newDiv.appendChild(newUl);
+          // Append the new div at the end of the container with class "content-for-layout"
+          const contentLayout = document.querySelector('.content-for-layout');
+          if (contentLayout) {
+              contentLayout.appendChild(newDiv);
+              document.querySelector(resultClassName).innerHTML = htmlContent || '';
+          }
+        }
       }
  } catch (error) {
     console.error("Error in getBrand:", error);
@@ -1092,6 +1124,7 @@ async function loaderplp() {
       mainHTML = document.querySelector(resultClassName).innerHTML;
       document.querySelector(resultClassName).innerHTML = loaderHTML;
     } 
+    
 }
 loaderplp();
   </script>

@@ -1,13 +1,13 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "f1e5c28469bdf4e1ab3836f5a80b4d62"
-name = "Miro Extension"
+name = "Miros AI Search and filter"
 handle = "miro_extension"
-application_url = "https://offers-deserve-drama-ashley.trycloudflare.com"
+application_url = "https://miros-shopify-app-abffbc907e41.herokuapp.com/"
 embedded = true
 
 [build]
-automatically_update_urls_on_dev = true
+automatically_update_urls_on_dev = false
 dev_store_url = "quickstart-db2dc1d6.myshopify.com"
 
 [access_scopes]
@@ -16,9 +16,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://offers-deserve-drama-ashley.trycloudflare.com/auth/callback",
-  "https://offers-deserve-drama-ashley.trycloudflare.com/auth/shopify/callback",
-  "https://offers-deserve-drama-ashley.trycloudflare.com/api/auth/callback"
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/callback",
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/shopify/callback",
+  "https://miros-shopify-app-abffbc907e41.herokuapp.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -11,7 +11,8 @@ generator client {
 datasource db {
   provider = "postgresql"
   //url      = "postgresql://postgres:admin1234@localhost:5432/theme_extension"
-  url = "postgres://ufa148hsl7krgn:p99f0f656a073436694bea2a1b1de1b58c82a92679807ae38613479134c64d2ed@caij57unh724n3.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d221gao20bqdd1"
+  //url = "postgres://ufa148hsl7krgn:p99f0f656a073436694bea2a1b1de1b58c82a92679807ae38613479134c64d2ed@caij57unh724n3.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d221gao20bqdd1"
+  url = "postgres://u4l4anugsd8ln4:pdea4bcef470064d40aa866d8417501a791952bd592830870cd1fd950ef5f1a39@cat670aihdrkt1.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/ddkd80g5ak0ao1"
 }
 model Session {
   id            String    @id

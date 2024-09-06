@@ -10,7 +10,7 @@
     const store = location.href.split('https://');
     const shopsplit = store[1].split('/');
     const shop = shopsplit[0];
-    const response = await fetch(`https://miros-shopify-app-abffbc907e41.herokuapp.com/api/get?shop=${shop}`);
+    const response = await fetch(`https://miro-60cda8b7fcb1.herokuapp.com/api/get?shop=${shop}`);
     if (response.ok) {
       const data = await response.json();
       console.log("resultClassNameresultClassName",data)

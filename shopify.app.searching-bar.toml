@@ -3,7 +3,7 @@
 client_id = "f1e5c28469bdf4e1ab3836f5a80b4d62"
 name = "Miros AI Search and filter"
 handle = "miro_extension"
-application_url = "https://miros-shopify-app-abffbc907e41.herokuapp.com/"
+application_url = "https://miro-60cda8b7fcb1.herokuapp.com/"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/callback",
-  "https://miros-shopify-app-abffbc907e41.herokuapp.com/auth/shopify/callback",
-  "https://miros-shopify-app-abffbc907e41.herokuapp.com/api/auth/callback"
+  "https://miro-60cda8b7fcb1.herokuapp.com/auth/callback",
+  "https://miro-60cda8b7fcb1.herokuapp.com/auth/shopify/callback",
+  "https://miro-60cda8b7fcb1.herokuapp.com/api/auth/callback"
 ]
 
 [webhooks]
@@ -28,4 +28,4 @@ api_version = "2024-07"
 embedded = false
 
 [app_preferences]
-url = "https://miros-shopify-app-abffbc907e41.herokuapp.com/"
+url = "https://miro-60cda8b7fcb1.herokuapp.com/"

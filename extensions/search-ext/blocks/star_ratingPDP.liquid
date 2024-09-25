@@ -34,8 +34,17 @@
       console.error('Error adding item to cart:', error);
     });
   });
+  var integrationID = localStorage.getItem("integration_id");
+  const script = document.createElement('script');
+        script.type = 'module';
+        script.src = 'https://content.miros.services/frontend/public/main/container/assets/container.bundle.js';
+        script.setAttribute('data-miros-integration-id', integrationID);
+
+        // Append the script to the body or head
+        document.body.appendChild(script);
   </script>
-  <script type="module" src="https://content.miros.services/frontend/public/main/container/assets/container.bundle.js" data-miros-integration-id="ba5e511a-4052-44fc-88b7-01f1cfee9a77"></script>
+  
+  
 
 {% schema %}
 {

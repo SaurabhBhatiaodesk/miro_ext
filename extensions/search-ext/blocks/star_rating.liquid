@@ -4,7 +4,6 @@
     {% render 'starsnew', rating: avg_rating %}
   {% endif %}  
 </span>
- <!-- Add this script to theme.liquid or a common template file -->
  <script>
   async function getAccessTokenplp() {
     const store = location.href.split('https://');
@@ -177,8 +176,15 @@
     });
   });
   var integrationID = localStorage.getItem("integration_id");
+  const script = document.createElement('script');
+        script.type = 'module';
+        script.src = 'https://content.miros.services/frontend/public/main/container/assets/container.bundle.js';
+        script.setAttribute('data-miros-integration-id', integrationID);
+
+        // Append the script to the body or head
+        document.body.appendChild(script);
   </script>
-  <script type="module" src="https://content.miros.services/frontend/public/main/container/assets/container.bundle.js" data-miros-integration-id=""+integrationID ></script>
+  
 
 {% schema %}
 {
